@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CustomsDED.Common\CustomsDED.Common.csproj" />
+  </ItemGroup>
+
 </Project>

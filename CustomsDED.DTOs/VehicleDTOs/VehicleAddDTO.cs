@@ -1,12 +1,9 @@
-﻿namespace CustomsDED.Data.Models
+﻿namespace CustomsDED.DTOs.VehicleDTOs
 {
-    using SQLite;
+    using System;
 
-    public class Vehicle
+    public class VehicleAddDTO
     {
-        [PrimaryKey, AutoIncrement]
-        public long Id { get; set; }
-
         public string LicensePlate { get; set; } = null!;
 
         public string? Info { get; set; }
