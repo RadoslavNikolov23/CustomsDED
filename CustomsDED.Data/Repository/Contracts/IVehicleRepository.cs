@@ -4,6 +4,8 @@
 
     public interface IVehicleRepository : IBaseAsyncRepository<Vehicle>
     {
+        Task<IEnumerable<Vehicle>> GetAllVehiclesByPlateInput(string plateInput);
+
         Task<IEnumerable<Vehicle>> GetAllVehiclesByDate(DateTime pickedDate);
     }
 }

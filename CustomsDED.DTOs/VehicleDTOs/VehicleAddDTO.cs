@@ -2,12 +2,9 @@
 {
     using System;
 
-    public class VehicleAddDTO
+    public class VehicleAddDTO : VehicleBaseDTO
     {
-        public string LicensePlate { get; set; } = null!;
 
-        public string? Info { get; set; }
 
-        public DateTime? DateOfInspection { get; set; }
     }
 }

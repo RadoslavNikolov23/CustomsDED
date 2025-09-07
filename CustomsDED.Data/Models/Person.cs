@@ -23,7 +23,7 @@
         public string? Nationality { get; set; }
 
         [MaxLength(15)]
-        public string? PersonalNumber { get; set; }
+        public string? PersonalNumber { get; set; } //= null!;
 
         public SexType? SexType { get; set; }
 

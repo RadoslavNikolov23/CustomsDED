@@ -11,7 +11,7 @@
         public string LicensePlate { get; set; } = null!;
 
         [MaxLength(2045)]
-        public string? Info { get; set; }
+        public string? AddictionInfo { get; set; }
 
         public DateTime? DateOfInspection { get; set; }
     }

@@ -2,17 +2,20 @@
 {
     using CustomsDED.Common.Enums;
 
-    public class PersonAddDTO
+    public class PersonAddDTO : PersonBaseDTO
     {
-        public string FirstName { get; set; } = null!;
+        // public string FirstName { get; set; } = null!;
 
-        public string? MiddleName { get; set; }
+        // public string? MiddleName { get; set; }
 
-        public string LastName { get; set; } = null!;
+        // public string LastName { get; set; } = null!;
 
-        public string Nationality { get; set; } = null!;
 
-        public DateTime? DateOfBirth { get; set; }
+        //  public DateTime? DateOfBirth { get; set; }
+
+        //  public DateTime? DateOfInspection { get; set; }
+
+        public string? Nationality { get; set; }
 
         public string? PersonalNumber { get; set; }
 
