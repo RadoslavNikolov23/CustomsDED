@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using CustomsDED.Common.Helpers;
     using CustomsDED.Data.Models;
     using CustomsDED.Data.Repository.Contracts;
     using CustomsDED.DTOs.VehicleDTOs;
@@ -19,65 +19,88 @@
 
         public async Task<bool> AddVehicleAsync(VehicleAddDTO vehicleDTO)
         {
-            bool isAdded = false;
-
-            if (vehicleDTO != null)
+            try
             {
-                Vehicle vehicle = new Vehicle()
+                bool isAdded = false;
+
+                if (vehicleDTO != null)
                 {
-                    LicensePlate = vehicleDTO.LicensePlate,
-                    AddictionInfo = vehicleDTO.AddictionInfo,
-                    DateOfInspection = DateTime.UtcNow,
-                };
+                    Vehicle vehicle = new Vehicle()
+                    {
+                        LicensePlate = vehicleDTO.LicensePlate,
+                        AddictionInfo = vehicleDTO.AddictionInfo,
+                        DateOfInspection = DateTime.UtcNow,
+                    };
 
-                isAdded = await vehicleRepo.AddAsync(vehicle);
+                    isAdded = await vehicleRepo.AddAsync(vehicle);
 
+                }
+
+                return isAdded;
             }
-
-            return isAdded;
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in AddVehicleAsync, in the VehicleService class.");
+                throw;
+            }
         }
 
         public async Task<ICollection<VehicleGetPlateDTO>> GetVehiclesByTextAsync(string plateInput)
         {
-            IEnumerable<Vehicle> vehiclesEntitiesList =
-                                   await this.vehicleRepo.GetAllVehiclesByPlateInput(plateInput.ToLower());
-
-            ICollection<VehicleGetPlateDTO> vehiclesGetPlateDTOsList = new List<VehicleGetPlateDTO>();
-
-            foreach (Vehicle vehicle in vehiclesEntitiesList)
+            try
             {
-                vehiclesGetPlateDTOsList.Add(new VehicleGetPlateDTO()
+                IEnumerable<Vehicle> vehiclesEntitiesList =
+                                       await this.vehicleRepo.GetAllVehiclesByPlateInput(plateInput.ToLower());
+
+                ICollection<VehicleGetPlateDTO> vehiclesGetPlateDTOsList = new List<VehicleGetPlateDTO>();
+
+                foreach (Vehicle vehicle in vehiclesEntitiesList)
                 {
-                    LicensePlate = vehicle.LicensePlate,
-                    AddictionInfo = vehicle.AddictionInfo,
-                    DateOfInspection = vehicle.DateOfInspection,
+                    vehiclesGetPlateDTOsList.Add(new VehicleGetPlateDTO()
+                    {
+                        LicensePlate = vehicle.LicensePlate,
+                        AddictionInfo = vehicle.AddictionInfo,
+                        DateOfInspection = vehicle.DateOfInspection,
 
-                });
+                    });
+                }
+
+                return vehiclesGetPlateDTOsList;
             }
-
-            return vehiclesGetPlateDTOsList;
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in GetVehiclesByTextAsync, in the VehicleService class.");
+                throw;
+            }
         }
 
         public async Task<ICollection<VehicleGetDateDTO>> GetVehiclesByDateAsync(DateTime pickedDate)
         {
-
-            IEnumerable<Vehicle> vehiclesEntitiesList =
-                                   await this.vehicleRepo.GetAllVehiclesByDate(pickedDate);
-
-            ICollection<VehicleGetDateDTO> vehiclesGetDateDTOsList = new List<VehicleGetDateDTO>();
-
-            foreach (Vehicle vehicle in vehiclesEntitiesList)
+            try
             {
-                vehiclesGetDateDTOsList.Add(new VehicleGetDateDTO()
+                IEnumerable<Vehicle> vehiclesEntitiesList =
+                                       await this.vehicleRepo.GetAllVehiclesByDate(pickedDate);
+
+                ICollection<VehicleGetDateDTO> vehiclesGetDateDTOsList = new List<VehicleGetDateDTO>();
+
+                foreach (Vehicle vehicle in vehiclesEntitiesList)
                 {
-                    LicensePlate = vehicle.LicensePlate,
-                    AddictionInfo = vehicle.AddictionInfo,
-                    DateOfInspection = vehicle.DateOfInspection,
+                    vehiclesGetDateDTOsList.Add(new VehicleGetDateDTO()
+                    {
+                        LicensePlate = vehicle.LicensePlate,
+                        AddictionInfo = vehicle.AddictionInfo,
+                        DateOfInspection = vehicle.DateOfInspection,
 
-                });
+                    });
+                }
+
+                return vehiclesGetDateDTOsList;
             }
-
-            return vehiclesGetDateDTOsList;
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in GetVehiclesByDateAsync, in the VehicleService class.");
+                throw;
+            }
         }
     }
 }
