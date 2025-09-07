@@ -2,6 +2,10 @@
 namespace CustomsDED
 {
     using CommunityToolkit.Maui;
+    using CustomsDED.Data.Connection;
+    using CustomsDED.Data.Models;
+    using CustomsDED.Data.Repository;
+    using CustomsDED.Data.Repository.Contracts;
     using CustomsDED.Views;
     using Microsoft.Extensions.Logging;
     using Plugin.Maui.OCR;
@@ -23,7 +27,7 @@ namespace CustomsDED
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-
+            RegisterDateBaseComponents(builder.Services);
             RegisterPages(builder.Services);
 
 
@@ -32,6 +36,14 @@ namespace CustomsDED
 #endif
 
             return builder.Build();
+        }
+
+        public static void RegisterDateBaseComponents(IServiceCollection services)
+        {
+            services.AddScoped<CustomsDB>();
+            services.AddScoped(typeof(IBaseAsyncRepository<>), typeof(BaseAsyncRepository<>));
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
         }
 
         public static void RegisterPages(IServiceCollection services)

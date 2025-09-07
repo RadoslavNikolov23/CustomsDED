@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.100" />
+  </ItemGroup>
+
 </Project>

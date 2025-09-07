@@ -7,8 +7,10 @@
         [PrimaryKey, AutoIncrement]
         public long Id { get; set; }
 
+        [MaxLength(10)]
         public string LicensePlate { get; set; } = null!;
 
+        [MaxLength(2045)]
         public string? Info { get; set; }
 
         public DateTime? DateOfInspection { get; set; }
