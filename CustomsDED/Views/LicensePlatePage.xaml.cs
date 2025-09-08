@@ -47,8 +47,6 @@ public partial class LicensePlatePage : ContentPage
         }
     }
 
-   
-
     private async void TakePlatePictureClicked(object sender, EventArgs e)
     {
         try
@@ -84,7 +82,6 @@ public partial class LicensePlatePage : ContentPage
         }
         finally
         {
-
             // Stop preview so we can reopen later
             if (this.isCameraPreviewing)
             {

@@ -1,14 +1,16 @@
 ﻿namespace CustomsDED.ViewModels
 {
+    using System.Text.RegularExpressions;
+    using Plugin.Maui.OCR;
     using CommunityToolkit.Mvvm.ComponentModel;
     using CommunityToolkit.Mvvm.Input;
-    using Plugin.Maui.OCR;
-    using System.Text.RegularExpressions;
+
+    using CustomsDED.Services.VehicleServices.Contract;
+    using CustomsDED.DTOs.VehicleDTOs;
+    using CustomsDED.Common.Helpers;
 
     using static CustomsDED.Services.CropImageServices.CropImageService;
     using static CustomsDED.Common.Regex.RegexLicensePlates;
-    using CustomsDED.Services.VehicleServices.Contract;
-    using CustomsDED.DTOs.VehicleDTOs;
 
     public partial class LicensePlateViewModel : BaseViewModel
     {
@@ -36,11 +38,6 @@
             this.vehicleService = vehicleService;
         }
 
-        //[RelayCommand]
-        //private async Task TakePlatePicture()
-        //{
-
-        //}
 
         public async Task ProcessCapturedImageAsync(byte[] photoBytes)
         {
@@ -55,7 +52,7 @@
             }
 
             // OCR
-            OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes);
+            OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes, tryHard: true);
 
             if (!result.Success)
             {
@@ -77,7 +74,6 @@
             }
         }
 
-
         [RelayCommand]
         private void OpenCameraView()
         {
@@ -95,20 +91,28 @@
         [RelayCommand]
         private async Task SaveVehicle()
         {
-            bool isSaved = await this.vehicleService
-                                            .AddVehicleAsync(new VehicleAddDTO
-                                            {
-                                                LicensePlate = this.PlateLicenseEntry,
-                                                AdditionalInfo = this.AdditionInfoEntry
-                                            });
+            try
+            {
+                bool isSaved = await this.vehicleService
+                                                .AddVehicleAsync(new VehicleAddDTO
+                                                {
+                                                    LicensePlate = this.PlateLicenseEntry,
+                                                    AdditionalInfo = this.AdditionInfoEntry
+                                                });
 
-            if (isSaved)
-            {
-                await ShowPopupMessage("Success", "Vehicle saved successfully.");
+                if (isSaved)
+                {
+                    await ShowPopupMessage("Success", "Vehicle saved successfully.");
+                }
+                else
+                {
+                    await ShowPopupMessage("Error", "Failed to save vehicle. Please try again.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await ShowPopupMessage("Error", "Failed to save vehicle. Please try again.");
+                await Logger.LogAsync(ex, "Error in SaveVehicle, in the LicensePlateViewModel class.");
+                await ShowPopupMessage("Error", "An error occurred while saving the vehicle. Please try again.");
             }
         }
 
@@ -136,8 +140,6 @@
 
             return null;
         }
-
-
 
         [RelayCommand]
         private async Task ReportAProblem()

@@ -1,12 +1,162 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CustomsDED.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="CustomsDED.Views.MrzPersonPage"
-             Title="MrzPersonPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewmodels:MrzPersonViewModel"
+             Title="Person Information"
+             BackgroundColor="White">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="iconemail.png"
+                 Command="{Binding ReportAProblemCommand}"
+                 Order="Primary"
+                 Priority="0" />
+    </ContentPage.ToolbarItems>
+    
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="15">
+
+
+            <Grid IsVisible="{Binding IsCameraViewVisible}">
+                <toolkit:CameraView x:Name="CameraView"
+                                    WidthRequest="350"
+                                    HeightRequest="450"/>
+
+                <Frame WidthRequest="300"
+                       HeightRequest="80"
+                       BorderColor="Red"
+                       BackgroundColor="#33FFFFFF"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       HasShadow="False"/>
+                
+                <!-- Guide Frame with Text -->
+                <Frame Padding="5"
+                       CornerRadius="8"
+                       BackgroundColor="#66000000"
+                       BorderColor="Goldenrod"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Margin="10"
+                       HasShadow="False"
+                       IsVisible="True">
+                    <Label Text="Star from the top left corner of the border!"
+                           TextColor="White"
+                           FontSize="Small"
+                           FontAttributes="Italic"/>
+                </Frame>
+            </Grid>
+
+            <HorizontalStackLayout  Spacing="10"
+                                    IsVisible="{Binding IsCameraViewLayotVisible}">
+
+                <Button Text="Take Picture"
+                        Clicked="TakeMRZPictureClicked"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="160"
+                        HeightRequest="50"/>
+
+                <Button Text="Close Camera"
+                        Command="{Binding CloseCameraViewCommand}"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="165"
+                        HeightRequest="50"/>
+
+            </HorizontalStackLayout>
+
+            <Frame
+                 BackgroundColor="White"
+                 BorderColor="Gray"
+                 CornerRadius="12"
+                 Padding="10">
+                <VerticalStackLayout>
+
+                    <!--Person Name and Details-->
+                    <Label Text="Person Name: "
+                           FontSize="Small"/>
+                    
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="First Name"
+                               Text="{Binding FirstNameEntry, Mode=TwoWay}"/>
+                        
+                        <Entry Placeholder="Middle Name"
+                               Text="{Binding MiddleNameEntry, Mode=TwoWay}"
+                               IsVisible="{Binding IsMiddleNameVisibleEntry}"/>
+
+                        <Entry Placeholder="Last Name"
+                               Text="{Binding LastNameEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+
+                    <!--Person Date of Birth and Nationality-->
+                    <Label Text="Person Date of birth and Nationality:  "
+                           FontSize="Small"/>
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="Date of Birth (YYYY-MM-DD)"
+                               Text="{Binding DateOfBirthEntry, Mode=TwoWay}"/>
+                        
+                        <Entry Placeholder="Nationality"
+                               Text="{Binding NationalityEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+
+                    <!--Person ID and Sex-->
+                    <Label Text="Person Id and Sex: "
+                           FontSize="Small"/>
+                    
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="Personal ID"
+                               Text="{Binding PersonalIdEntry, Mode=TwoWay}"/>
+                        
+                        <Entry Placeholder="Personal Sex"
+                               Text="{Binding SexEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+
+                    <!--Person Document Type, Expiration Date, Issuing country-->
+                    <Label Text="Document Information: "
+                           FontSize="Small"/>
+                    
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="Document Type"
+                               Text="{Binding DocumentTypeEntry, Mode=TwoWay}"/>
+                        <Entry Placeholder="Document Number"
+                               Text="{Binding DocumentNumberEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="Expiration Date"
+                               Text="{Binding ExpirDateEntry, Mode=TwoWay}"/>
+                        <Entry Placeholder="Issuing Contry"
+                               Text="{Binding IssuingContryEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+
+                    <!--Person Addition information-->
+                    <Label Text="Additional Information: "
+                           FontSize="Small"/>
+                    
+                    <HorizontalStackLayout>
+                        <Entry Placeholder="Addition Info"
+                               Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+            
+            <!-- Buttons -->
+            <Button Text="Scan Document"
+                    Command="{Binding OpenCameraViewCommand}"
+                    BackgroundColor="SteelBlue"
+                    WidthRequest="330"
+                    HeightRequest="50"/>
+
+            <Button Text="Save Person"
+                    Command="{Binding SavePersonCommand}"
+                    BackgroundColor="SteelBlue"
+                    WidthRequest="330"
+                    HeightRequest="50"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
