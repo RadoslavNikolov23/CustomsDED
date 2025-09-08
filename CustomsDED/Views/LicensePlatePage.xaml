@@ -1,12 +1,115 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CustomsDED.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="CustomsDED.Views.LicensePlatePage"
-             Title="LicensePlatePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewmodels:LicensePlateViewModel"
+             Title="License Plate Save"
+             BackgroundColor="White">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="iconemail.png"
+                 Command="{Binding ReportAProblemCommand}"
+                 Order="Primary"
+                 Priority="0" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="15">
+
+            <!-- Camera View -->
+            <Grid>
+                
+                <toolkit:CameraView  WidthRequest="350"
+                                     HeightRequest="450"
+                                     IsVisible="{Binding IsCameraViewVisable}"/>
+
+                <Frame WidthRequest="300"
+                       HeightRequest="80"
+                       BorderColor="Red"
+                       BackgroundColor="#33FFFFFF"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       HasShadow="False"
+                       IsVisible="{Binding IsPlateFrameVisable}"/>
+                
+                <!-- Guide Frame with Text -->
+                <Frame Padding="5"
+                       CornerRadius="8"
+                       BackgroundColor="#66000000"
+                       BorderColor="Goldenrod"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Margin="10"
+                       HasShadow="False"
+                       IsVisible="True">
+                    <Label Text="Star from the top left corner of the border!"
+                           TextColor="White"
+                           FontSize="Small"
+                           FontAttributes="Italic"/>
+                </Frame>
+            </Grid>
+
+
+            <HorizontalStackLayout
+                 Spacing="5">
+
+                <Button Text="Take Picture"
+                        Command="{Binding TakePlatePictureCommand}"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="160"
+                        HeightRequest="50"
+                        IsVisible="{Binding IsVisiableTakePlatePictureButton}"/>
+
+                <Button Text="Go Back"
+                        Command="{Binding GoBackTakePlateCommand}"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="165"
+                        HeightRequest="50"
+                        IsVisible="{Binding IsVisiableGoBackTakePlateButton}"/>
+
+            </HorizontalStackLayout>
+
+            <Frame
+                   BackgroundColor="White"
+                   BorderColor="Gray"
+                   CornerRadius="12"
+                   Padding="10">
+
+                <!-- Manual entry fields -->
+                <VerticalStackLayout>
+                    <Label Text="Vehicle Number: "
+                           FontSize="Small"/>
+                    <Entry Placeholder="License Plate"
+                           Text="{Binding PlateLicenseEntry, Mode=TwoWay}"/>
+                    
+                    <Label Text="Addition Info: "
+                           FontSize="Small"/>
+                    <Entry Placeholder="Additional Info"
+                           Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
+                </VerticalStackLayout>
+
+            </Frame>
+
+
+            <!-- Buttons -->
+            <Button Text="Scan Plate"
+                    Command="{Binding OpenPlateCameraCommand}"
+                    BackgroundColor="SteelBlue"
+                    WidthRequest="330"
+                    HeightRequest="50"/>
+
+
+            <Button Text="Save Plate"
+                    Command="{Binding SavePlateCommand}"
+                    BackgroundColor="SteelBlue"
+                    WidthRequest="330"
+                    HeightRequest="50"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

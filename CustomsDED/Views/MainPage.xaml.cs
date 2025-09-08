@@ -2,9 +2,10 @@
 {
     using CommunityToolkit.Maui.Alerts;
     using CommunityToolkit.Maui.Core;
+
     using CustomsDED.Resources.Localization;
 
-    public partial class MainPage : ContentPage
+    public partial class MainPage : Shell
     {
         private DateTime lastBackPressed;
         private readonly TimeSpan backPressThreshold = TimeSpan.FromSeconds(2);
