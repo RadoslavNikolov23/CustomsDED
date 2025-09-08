@@ -5,7 +5,7 @@
              xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.DateSearchPage"
              x:DataType="viewmodels:DateSearchViewModel"
-             Title="Search By Date"
+             Title="{x:Static lang:AppResources.SearchByDate}"
              BackgroundColor="White">
 
     <ScrollView>
@@ -19,13 +19,13 @@
                     Padding="10">
                 
                 <VerticalStackLayout Spacing="10">
-                    
-                    <Label Text="Enter Date:"
+
+                    <Label Text="{x:Static lang:AppResources.PickDate}"
                            FontSize="Small"/>
 
                     <DatePicker Date="{Binding InspectionDatePicker}"/>
-                    
-                    <Button Text="Search"
+
+                    <Button Text="{x:Static lang:AppResources.Search}"
                             Command="{Binding SearchByDateClicked}"
                             BackgroundColor="SteelBlue"/>
                 </VerticalStackLayout>
@@ -38,7 +38,7 @@
                     Padding="10">
                 
                 <VerticalStackLayout>
-                    <Label Text="Vehicles:"
+                    <Label Text="{x:Static lang:AppResources.Vehicles}"
                            FontAttributes="Bold"
                            FontSize="Small"/>
 
@@ -74,7 +74,7 @@
                     Padding="10">
 
                 <VerticalStackLayout>
-                    <Label Text="Persons:"
+                    <Label Text="{x:Static lang:AppResources.Persons}"
                            FontAttributes="Bold"
                            FontSize="Small"/>
                     

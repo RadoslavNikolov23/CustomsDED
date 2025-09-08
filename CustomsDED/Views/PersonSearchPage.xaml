@@ -5,7 +5,7 @@
              xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.PersonSearchPage"
              x:DataType="viewmodels:PersonSearchViewModel"
-             Title="Person Search"
+             Title="{x:Static lang:AppResources.PersonSearch}"
              BackgroundColor="White">
 
     <ScrollView>
@@ -19,11 +19,11 @@
                     Padding="10">
                 
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="Enter Person Information:"
+                    <Label Text="{x:Static lang:AppResources.EnterPersonInformation} "
                            FontSize="Small"/>
                     <Entry Placeholder="Enter First/Last/PersonalId"
                            Text= "{Binding EnterPersonInfoEntry, Mode=TwoWay}"/>
-                    <Button Text="Search"
+                    <Button Text="{x:Static lang:AppResources.Search}"
                             Command="{Binding SearchPersonCommand}"
                             BackgroundColor="SteelBlue"/>
                 </VerticalStackLayout>
@@ -38,7 +38,7 @@
                                Margin="5">
                             <VerticalStackLayout Spacing="10">
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Name: "
+                                    <Label Text="{x:Static lang:AppResources.Name} "
                                     FontSize="Small"/>
                                     <Label Text="{Binding FirstName}" 
                                            TextColor="Black"
@@ -50,7 +50,7 @@
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Personal Id: "
+                                    <Label Text="{x:Static lang:AppResources.PersonalId} "
                                            FontSize="Small"/>
                                     <Label Text="{Binding PersonalId}" 
                                            TextColor="Black"
@@ -58,7 +58,7 @@
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Date of Check: "
+                                    <Label Text="{x:Static lang:AppResources.DateOfCheck} "
                                            FontSize="Small"/>
                                     <Label Text="{Binding DateOfInspection, StringFormat='{0:yyyy/MM/dd}'}" 
                                            TextColor="Black"

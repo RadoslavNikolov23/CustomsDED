@@ -1,7 +1,9 @@
 ﻿namespace CustomsDED.ViewModels
 {
     using CommunityToolkit.Mvvm.ComponentModel;
+
     using CustomsDED.Common.Helpers;
+    using CustomsDED.Resources.Localization;
 
     public abstract class BaseViewModel : ObservableObject
     {
@@ -29,7 +31,7 @@
                     EmailAttachment logAttachment = new EmailAttachment(logFilePath, "text/plain");
                     message = new EmailMessage
                     {
-                        Subject = "App Work Chronicle Problem Report",
+                        Subject = "App Customs DED Problem Report",
                         Body = "Please describe the problem you're experiencing:\n\n",
                         To = new List<string> { "custom_rd@abv.bg" },
                         Attachments = new List<EmailAttachment> { logAttachment }
@@ -39,7 +41,7 @@
                 {
                     message = new EmailMessage
                     {
-                        Subject = "App Work Chronicle Problem Report",
+                        Subject = "App Customs DED Problem Report",
                         Body = "Please describe the problem you're experiencing:\n\n",
                         To = new List<string> { "custom_rd@abv.bg" }
                     };
@@ -52,12 +54,14 @@
             }
             catch (FeatureNotSupportedException)
             {
-                await ShowPopupMessage("Error", "Email is not supported on this device.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.EmailNotSupportedOnDevice);
 
             }
             catch (Exception ex)
             {
-                await ShowPopupMessage("Error", $"An unexpected error occurred: {ex.Message}");
+                await ShowPopupMessage(AppResources.Error,
+                         String.Format(AppResources.AnUnexpectedErrorOccurred,ex));
 
             }
 

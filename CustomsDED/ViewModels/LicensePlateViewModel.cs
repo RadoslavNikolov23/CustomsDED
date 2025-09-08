@@ -8,6 +8,7 @@
     using CustomsDED.Services.VehicleServices.Contract;
     using CustomsDED.DTOs.VehicleDTOs;
     using CustomsDED.Common.Helpers;
+    using CustomsDED.Resources.Localization;
 
     using static CustomsDED.Services.CropImageServices.CropImageService;
     using static CustomsDED.Common.Regex.RegexLicensePlates;
@@ -41,23 +42,21 @@
 
         public async Task ProcessCapturedImageAsync(byte[] photoBytes)
         {
-            // Crop
             byte[]? croppedBytes = await CropToOverlayAsync(photoBytes);
 
             if (croppedBytes == null)
             {
-                //TODO : fix the message!
-                await ShowPopupMessage("Error", "Image cropping failed. Please try again.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
-            // OCR
             OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes, tryHard: true);
 
             if (!result.Success)
             {
-                //TODO: fix the message!
-                await ShowPopupMessage("Error", "OCR failed. Please try again.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
@@ -65,12 +64,13 @@
 
             if (plate == null)
             {
-                await ShowPopupMessage("Error", "No valid license plate found. Please try again or fix it manual!.");
-                this.PlateLicenseEntry = $"{result.AllText}";
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
+                this.PlateLicenseEntry = result.AllText;
             }
             else
             {
-                this.PlateLicenseEntry = plate ?? $"{result.AllText} Could correctly";
+                this.PlateLicenseEntry = plate;
             }
         }
 
@@ -102,23 +102,25 @@
 
                 if (isSaved)
                 {
-                    await ShowPopupMessage("Success", "Vehicle saved successfully.");
+                    await ShowPopupMessage(AppResources.Success, 
+                                           AppResources.VehicleSavedSuccessfully);
                 }
                 else
                 {
-                    await ShowPopupMessage("Error", "Failed to save vehicle. Please try again.");
+                    await ShowPopupMessage(AppResources.Error, 
+                                           AppResources.FailedToSaveVehiclePleaseTryAgain);
                 }
             }
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in SaveVehicle, in the LicensePlateViewModel class.");
-                await ShowPopupMessage("Error", "An error occurred while saving the vehicle. Please try again.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.AnErrorOccurredWhileSavingVehicle);
             }
         }
 
         private string? ExtractLicensePlate(string ocrText)
         {
-            // Normalize OCR text
             string cleanText = ocrText
                                 .ToUpper()
                                 .Replace(" ", "")
@@ -126,7 +128,6 @@
                                 .Replace("\n", "")
                                 .Replace("\r", "");
 
-            // Split into words in case OCR returns multiple chunks
             List<string> candidates = Regex.Matches(cleanText, @"[A-Z0-9]+")
                                            .Select(m => m.Value)
                                            .ToList();

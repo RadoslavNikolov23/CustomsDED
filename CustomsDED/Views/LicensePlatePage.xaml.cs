@@ -1,6 +1,7 @@
 namespace CustomsDED.Views;
 
 using CustomsDED.Common.Helpers;
+using CustomsDED.Resources.Localization;
 using CustomsDED.ViewModels;
 
 public partial class LicensePlatePage : ContentPage
@@ -25,7 +26,10 @@ public partial class LicensePlatePage : ContentPage
                 PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
                 if (status != PermissionStatus.Granted)
                 {
-                    await DisplayAlert("Error", "Camera permission not granted", "OK");
+                    await DisplayAlert(AppResources.Error, 
+                                       AppResources.CameraPermissionNotGranted, 
+                                       "OK");
+
                     vm.CloseCameraViewCommand.Execute(null);
                     return;
                 }
@@ -57,7 +61,9 @@ public partial class LicensePlatePage : ContentPage
             if (stream == null)
             {
                 //TODO : User canceled or error, see what is best to do
-                await DisplayAlert("Error", "Camera Capture canceled.", "OK");
+                await DisplayAlert(AppResources.Error, 
+                                   AppResources.CameraCaptureCanceled, 
+                                   "OK");
                 return;
             }
 

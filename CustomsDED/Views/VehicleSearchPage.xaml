@@ -5,13 +5,13 @@
              xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.VehicleSearchPage"
              x:DataType="viewmodels:VehicleSearchViewModel"
-             Title="Vehicle Search"
+             Title="{x:Static lang:AppResources.VehicleSearch}"
              BackgroundColor="White">
 
 
     <ScrollView>
         <VerticalStackLayout Padding="20"
-                                      Spacing="10">
+                             Spacing="10">
 
             <Frame
                     BackgroundColor="White"
@@ -19,13 +19,13 @@
                     CornerRadius="12"
                     Padding="10">
                 <VerticalStackLayout Spacing="10">
-                    
-                    <Label Text="Enter Vehicle License Plate:"
+
+                    <Label Text="{x:Static lang:AppResources.EnterVehicleLicensePlate}"
                            FontSize="Small"/>
                     
                     <Entry Placeholder="Enter License Plate or Info"
                            Text="{Binding EnterLicensePlateEntry, Mode=TwoWay}"/>
-                    <Button Text="Search"
+                    <Button Text="{x:Static lang:AppResources.Search}"
                             Command="{Binding SearchVehicleCommand}"
                             BackgroundColor="SteelBlue"/>
                 </VerticalStackLayout>
@@ -40,7 +40,7 @@
                             <VerticalStackLayout Spacing="10">
                                 
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Vehicle Number:"
+                                    <Label Text="{x:Static lang:AppResources.VehicleNumber}"
                                            FontSize="Small"/>
                                     <Label Text="{Binding LicensePlate}" 
                                            TextColor="Black"
@@ -49,7 +49,7 @@
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Addition Info:"
+                                    <Label Text="{x:Static lang:AppResources.AdditionInfo}"
                                            FontSize="Small"/>
                                     <Label Text="{Binding AdditionalInfo}" 
                                            TextColor="Black"
@@ -57,7 +57,7 @@
                                 </HorizontalStackLayout>
                                 
                                 <HorizontalStackLayout Spacing="10">
-                                    <Label Text="Date of Check: "
+                                    <Label Text="{x:Static lang:AppResources.DateOfCheck} "
                                            FontSize="Small"/>
                                     <Label Text="{Binding DateOfInspection, StringFormat='{0:yyyy/MM/dd}'}" 
                                            TextColor="Black"

@@ -6,6 +6,7 @@
 
     using CustomsDED.Common.Helpers;
     using CustomsDED.DTOs.VehicleDTOs;
+    using CustomsDED.Resources.Localization;
     using CustomsDED.Services.VehicleServices.Contract;
 
     public partial class VehicleSearchViewModel : BaseViewModel
@@ -40,7 +41,8 @@
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in SearchVehicle, in the VehicleSearchViewModel class");
-                await ShowPopupMessage("Error", "An error occurred while searching for vehicles.");
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.AnErrorOccurredWhileSearchingVehicle);
             }
         }
 
@@ -50,5 +52,4 @@
             await SendEmailWithReport();
         }
     }
-
 }

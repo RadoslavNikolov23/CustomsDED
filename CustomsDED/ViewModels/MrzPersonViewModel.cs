@@ -10,9 +10,9 @@
     using CustomsDED.DTOs.PersonDTOs;
     using CustomsDED.Services.MrzParsesServices;
     using CustomsDED.Services.PersonServices.Contract;
+    using CustomsDED.Resources.Localization;
 
     using static CustomsDED.Services.CropImageServices.CropImageService;
-
 
     public partial class MrzPersonViewModel : BaseViewModel
     {
@@ -74,27 +74,24 @@
 
         public async Task ProcessCapturedImageAsync(byte[] photoBytes)
         {
-            // Crop
             byte[]? croppedBytes = await CropToOverlayAsync(photoBytes);
 
             if (croppedBytes == null)
             {
-                //TODO : fix the message!
-                await ShowPopupMessage("Error", "Image cropping failed. Please try again.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
-            // OCR
             OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes,tryHard: true);
 
             if (!result.Success)
             {
-                //TODO: fix the message!
-                await ShowPopupMessage("Error", "OCR failed. Please try again.");
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
-            // Parse MRZ
             try
             {
                 string[] mrzLines = result.AllText
@@ -107,8 +104,8 @@
 
                 if (infoPerson == null)
                 {
-                    //TODO: fix the message!
-                    await ShowPopupMessage("Error", "Something failed. Please try again.");
+                    await ShowPopupMessage(AppResources.Error, 
+                                           AppResources.SomethingFailedPleaseTryAgain);
                     return;
                 }
 
@@ -143,7 +140,8 @@
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in ProcessCapturedImageAsync, in the MrzPersonViewModel class.");
-                await ShowPopupMessage("Error", "An error occurred while saving the person. Please try again.");
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.AnErrorOccurredWhileSavingPerson);
             }
         }
 
@@ -191,17 +189,20 @@
 
                 if (isSaved)
                 {
-                    await ShowPopupMessage("Success", "Vehicle saved successfully.");
+                    await ShowPopupMessage(AppResources.Success,
+                                           AppResources.PersonSavedSuccessfully);
                 }
                 else
                 {
-                    await ShowPopupMessage("Error", "Failed to save vehicle. Please try again.");
+                    await ShowPopupMessage(AppResources.Error,
+                                           AppResources.FailedToSavePersonPleaseTryAgain);
                 }
             }
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in SavePerson, in the MrzPersonViewModel class.");
-                await ShowPopupMessage("Error", "An error occurred while saving the person. Please try again.");
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.AnErrorOccurredWhileSavingPerson);
             }
         }
 

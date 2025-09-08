@@ -7,6 +7,7 @@
     using CustomsDED.Common.Helpers;
     using CustomsDED.DTOs.PersonDTOs;
     using CustomsDED.DTOs.VehicleDTOs;
+    using CustomsDED.Resources.Localization;
     using CustomsDED.Services.PersonServices.Contract;
     using CustomsDED.Services.VehicleServices.Contract;
 
@@ -57,7 +58,8 @@
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in SearchByDate, in the DateSearchViewModel class");
-                await ShowPopupMessage("Error", "An error occurred while searching for vehicles.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.AnErrorOccurredWhileSearching);
             }
         }
         [RelayCommand]

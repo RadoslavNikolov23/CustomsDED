@@ -2,6 +2,10 @@
 namespace CustomsDED
 {
     using CommunityToolkit.Maui;
+    using Microsoft.Extensions.Logging;
+    using SkiaSharp.Views.Maui.Controls.Hosting;
+    using Plugin.Maui.OCR;
+
     using CustomsDED.Data.Connection;
     using CustomsDED.Data.Repository;
     using CustomsDED.Data.Repository.Contracts;
@@ -11,9 +15,6 @@ namespace CustomsDED
     using CustomsDED.Services.VehicleServices.Contract;
     using CustomsDED.ViewModels;
     using CustomsDED.Views;
-    using Microsoft.Extensions.Logging;
-    using Plugin.Maui.OCR;
-    using SkiaSharp.Views.Maui.Controls.Hosting;
 
     public static class MauiProgram
     {

@@ -7,14 +7,14 @@
              xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="CustomsDED.Views.MrzPersonPage"
              x:DataType="viewmodels:MrzPersonViewModel"
-             Title="Person Information"
+             Title="{x:Static lang:AppResources.PersonSave}"
              BackgroundColor="White">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="iconemail.png"
-                 Command="{Binding ReportAProblemCommand}"
-                 Order="Primary"
-                 Priority="0" />
+                     Command="{Binding ReportAProblemCommand}"
+                     Order="Primary"
+                     Priority="0" />
     </ContentPage.ToolbarItems>
     
     <ScrollView>
@@ -45,7 +45,7 @@
                        Margin="10"
                        HasShadow="False"
                        IsVisible="True">
-                    <Label Text="Star from the top left corner of the border!"
+                    <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
                            TextColor="White"
                            FontSize="Small"
                            FontAttributes="Italic"/>
@@ -55,13 +55,13 @@
             <HorizontalStackLayout  Spacing="10"
                                     IsVisible="{Binding IsCameraViewLayotVisible}">
 
-                <Button Text="Take Picture"
+                <Button Text="{x:Static lang:AppResources.TakePicture}"
                         Clicked="TakeMRZPictureClicked"
                         BackgroundColor="SteelBlue"
                         WidthRequest="160"
                         HeightRequest="50"/>
 
-                <Button Text="Close Camera"
+                <Button Text="{x:Static lang:AppResources.CloseCamera}"
                         Command="{Binding CloseCameraViewCommand}"
                         BackgroundColor="SteelBlue"
                         WidthRequest="165"
@@ -77,7 +77,7 @@
                 <VerticalStackLayout>
 
                     <!--Person Name and Details-->
-                    <Label Text="Person Name: "
+                    <Label Text="{x:Static lang:AppResources.PersonName} "
                            FontSize="Small"/>
                     
                     <HorizontalStackLayout>
@@ -93,7 +93,7 @@
                     </HorizontalStackLayout>
 
                     <!--Person Date of Birth and Nationality-->
-                    <Label Text="Person Date of birth and Nationality:  "
+                    <Label Text="{x:Static lang:AppResources.PersonDateBirthAndNationality}  "
                            FontSize="Small"/>
                     <HorizontalStackLayout>
                         <Entry Placeholder="Date of Birth (YYYY-MM-DD)"
@@ -104,7 +104,7 @@
                     </HorizontalStackLayout>
 
                     <!--Person ID and Sex-->
-                    <Label Text="Person Id and Sex: "
+                    <Label Text="{x:Static lang:AppResources.PersonIdAndSex} "
                            FontSize="Small"/>
                     
                     <HorizontalStackLayout>
@@ -116,7 +116,7 @@
                     </HorizontalStackLayout>
 
                     <!--Person Document Type, Expiration Date, Issuing country-->
-                    <Label Text="Document Information: "
+                    <Label Text="{x:Static lang:AppResources.DocumentInformation} "
                            FontSize="Small"/>
                     
                     <HorizontalStackLayout>
@@ -133,7 +133,7 @@
                     </HorizontalStackLayout>
 
                     <!--Person Addition information-->
-                    <Label Text="Additional Information: "
+                    <Label Text="{x:Static lang:AppResources.AdditionInfo}"
                            FontSize="Small"/>
                     
                     <HorizontalStackLayout>
@@ -145,13 +145,13 @@
             </Frame>
             
             <!-- Buttons -->
-            <Button Text="Scan Document"
+            <Button Text="{x:Static lang:AppResources.OpenCamera}"
                     Command="{Binding OpenCameraViewCommand}"
                     BackgroundColor="SteelBlue"
                     WidthRequest="330"
                     HeightRequest="50"/>
 
-            <Button Text="Save Person"
+            <Button Text="{x:Static lang:AppResources.SavePerson}"
                     Command="{Binding SavePersonCommand}"
                     BackgroundColor="SteelBlue"
                     WidthRequest="330"

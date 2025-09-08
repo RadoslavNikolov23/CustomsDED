@@ -6,6 +6,7 @@
 
     using CustomsDED.Common.Helpers;
     using CustomsDED.DTOs.PersonDTOs;
+    using CustomsDED.Resources.Localization;
     using CustomsDED.Services.PersonServices.Contract;
 
     public partial class PersonSearchViewModel : BaseViewModel
@@ -40,7 +41,8 @@
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in SearchPerson, in the PersonSearchViewModel class");
-                await ShowPopupMessage("Error", "An error occurred while searching for vehicles.");
+                await ShowPopupMessage(AppResources.Error, 
+                                       AppResources.AnErrorOccurredWhileSearchingPerson);
             }
         }
 
