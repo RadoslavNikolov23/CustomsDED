@@ -72,10 +72,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\CustomsDED.DTOs\CustomsDED.DTOs.csproj" />
 	  <ProjectReference Include="..\CustomsDED.Services\CustomsDED.Services.csproj" />
 	</ItemGroup>
