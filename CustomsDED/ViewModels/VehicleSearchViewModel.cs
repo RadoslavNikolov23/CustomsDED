@@ -1,25 +1,17 @@
 ﻿namespace CustomsDED.ViewModels
 {
+    using System.Collections.ObjectModel;
     using CommunityToolkit.Mvvm.ComponentModel;
     using CommunityToolkit.Mvvm.Input;
-    using CustomsDED.Data.Models;
+
+    using CustomsDED.Common.Helpers;
     using CustomsDED.DTOs.VehicleDTOs;
     using CustomsDED.Services.VehicleServices.Contract;
-    using System.Collections.ObjectModel;
 
     public partial class VehicleSearchViewModel : BaseViewModel
     {
         [ObservableProperty]
         private string enterLicensePlateEntry = "";
-
-        //[ObservableProperty]
-        //private string licensePlateLabel = "";
-
-        //[ObservableProperty]
-        //private string additionInfoLabel = "";
-
-        //[ObservableProperty]
-        //private string dateOfInspectionLabel = "";
 
         [ObservableProperty]
         private ObservableCollection<VehicleGetPlateDTO> vehiclesResultList = new();
@@ -31,19 +23,25 @@
             this.vehicleService = vehicleService;
         }
 
-
         [RelayCommand]
         private async Task SearchVehicle()
         {
             string queryText = this.EnterLicensePlateEntry;
 
-            ICollection<VehicleGetPlateDTO> vehicleList = await this.vehicleService
-                                                                    .GetVehiclesByTextAsync(queryText);
-            foreach (VehicleGetPlateDTO vehicle in vehicleList)
+            try
             {
-                this.VehiclesResultList.Add(vehicle);
+                ICollection<VehicleGetPlateDTO> vehicleList = await this.vehicleService
+                                                                        .GetVehiclesByTextAsync(queryText);
+                foreach (VehicleGetPlateDTO vehicle in vehicleList)
+                {
+                    this.VehiclesResultList.Add(vehicle);
+                }
             }
-
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in SearchVehicle, in the VehicleSearchViewModel class");
+                await ShowPopupMessage("Error", "An error occurred while searching for vehicles.");
+            }
         }
 
         [RelayCommand]
@@ -52,5 +50,5 @@
             await SendEmailWithReport();
         }
     }
-    
+
 }

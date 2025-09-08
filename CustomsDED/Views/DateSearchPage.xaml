@@ -1,12 +1,109 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:CustomsDED.ViewModels"
+             xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.DateSearchPage"
-             Title="DateSearchPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewmodels:DateSearchViewModel"
+             Title="Search By Date"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="10">
+
+            <Frame
+                    BackgroundColor="White"
+                    BorderColor="Gray"
+                    CornerRadius="12"
+                    Padding="10">
+                
+                <VerticalStackLayout Spacing="10">
+                    
+                    <Label Text="Enter Date:"
+                           FontSize="Small"/>
+
+                    <DatePicker Date="{Binding InspectionDatePicker}"/>
+                    
+                    <Button Text="Search"
+                            Command="{Binding SearchByDateClicked}"
+                            BackgroundColor="SteelBlue"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame
+                    BackgroundColor="White"
+                    BorderColor="Gray"
+                    CornerRadius="12"
+                    Padding="10">
+                
+                <VerticalStackLayout>
+                    <Label Text="Vehicles:"
+                           FontAttributes="Bold"
+                           FontSize="Small"/>
+
+                    <CollectionView ItemsSource="{Binding DateVehiclesResultList}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame 
+                                        BorderColor="GhostWhite"
+                                        Padding="10"
+                                        Margin="5">
+                                    
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{Binding LicensePlate}" 
+                                               TextColor="Black"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding AdditionalInfo}" 
+                                                TextColor="Black"/>
+                                        <Border/>
+                                        <Label Text="{Binding DateOfInspection}" 
+                                               TextColor="Black"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame
+                    BackgroundColor="White"
+                    BorderColor="Gray"
+                    CornerRadius="12"
+                    Padding="10">
+
+                <VerticalStackLayout>
+                    <Label Text="Persons:"
+                           FontAttributes="Bold"
+                           FontSize="Small"/>
+                    
+                    <CollectionView  ItemsSource="{Binding DatePersonResultList}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame  BorderColor="GhostWhite"
+                                    Padding="10"
+                                    Margin="5">
+                                    
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{Binding FirstName}"  
+                                               TextColor="Black"
+                                               FontAttributes="Bold"/>
+
+                                        <Label Text="{Binding LastName}" 
+                                               TextColor="Black"/>
+                                        <Border/>
+                                        <Label Text="{Binding DateOfInspection}"
+                                               TextColor="Black"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
 </ContentPage>

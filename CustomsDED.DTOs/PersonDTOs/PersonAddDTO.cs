@@ -17,7 +17,7 @@
 
         public string? Nationality { get; set; }
 
-        public string? PersonalNumber { get; set; }
+        public string? PersonalId { get; set; }
 
         public string? DocumentNumber { get; set; }
 

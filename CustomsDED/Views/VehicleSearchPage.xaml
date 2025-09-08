@@ -30,8 +30,8 @@
                             BackgroundColor="SteelBlue"/>
                 </VerticalStackLayout>
             </Frame>
-            
-            <CollectionView>
+
+            <CollectionView ItemsSource="{Binding VehiclesResultList}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BorderColor="Gray"
@@ -42,7 +42,7 @@
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="Vehicle Number:"
                                            FontSize="Small"/>
-                                    <Label Text="{Binding LicensePlateLabel}" 
+                                    <Label Text="{Binding LicensePlate}" 
                                            TextColor="Black"
                                            FontAttributes="Bold"
                                            FontSize="Small"/>
@@ -51,7 +51,7 @@
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="Addition Info:"
                                            FontSize="Small"/>
-                                    <Label Text="{Binding AdditionInfoLabel}" 
+                                    <Label Text="{Binding AdditionalInfo}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
                                 </HorizontalStackLayout>
@@ -59,7 +59,7 @@
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="Date of Check: "
                                            FontSize="Small"/>
-                                    <Label Text="{Binding DateOfInspectionLabel, StringFormat='{0:yyyy/MM/dd}'}" 
+                                    <Label Text="{Binding DateOfInspection, StringFormat='{0:yyyy/MM/dd}'}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
                                 </HorizontalStackLayout>
