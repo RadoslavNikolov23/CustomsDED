@@ -22,11 +22,11 @@
                              Spacing="15">
 
             <!-- Camera View -->
-            <Grid>
-                
-                <toolkit:CameraView  WidthRequest="350"
-                                     HeightRequest="450"
-                                     IsVisible="{Binding IsCameraViewVisable}"/>
+            <Grid IsVisible="{Binding IsCameraViewVisible}">
+
+                <toolkit:CameraView  x:Name="CameraView"
+                                     WidthRequest="350"
+                                     HeightRequest="450"/>
 
                 <Frame WidthRequest="300"
                        HeightRequest="80"
@@ -34,8 +34,7 @@
                        BackgroundColor="#33FFFFFF"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
-                       HasShadow="False"
-                       IsVisible="{Binding IsPlateFrameVisable}"/>
+                       HasShadow="False"/>
                 
                 <!-- Guide Frame with Text -->
                 <Frame Padding="5"
@@ -55,22 +54,20 @@
             </Grid>
 
 
-            <HorizontalStackLayout
-                 Spacing="5">
+            <HorizontalStackLayout Spacing="5"
+                                   IsVisible="{Binding IsCameraViewLayotVisible}">
 
                 <Button Text="Take Picture"
-                        Command="{Binding TakePlatePictureCommand}"
+                        Clicked="TakePlatePictureClicked"
                         BackgroundColor="SteelBlue"
                         WidthRequest="160"
-                        HeightRequest="50"
-                        IsVisible="{Binding IsVisiableTakePlatePictureButton}"/>
+                        HeightRequest="50"/>
 
-                <Button Text="Go Back"
-                        Command="{Binding GoBackTakePlateCommand}"
+                <Button Text="Close Camera"
+                        Command="{Binding CloseCameraViewCommand}"
                         BackgroundColor="SteelBlue"
                         WidthRequest="165"
-                        HeightRequest="50"
-                        IsVisible="{Binding IsVisiableGoBackTakePlateButton}"/>
+                        HeightRequest="50"/>
 
             </HorizontalStackLayout>
 
@@ -98,14 +95,14 @@
 
             <!-- Buttons -->
             <Button Text="Scan Plate"
-                    Command="{Binding OpenPlateCameraCommand}"
+                    Command="{Binding OpenCameraViewCommand}"
                     BackgroundColor="SteelBlue"
                     WidthRequest="330"
                     HeightRequest="50"/>
 
 
             <Button Text="Save Plate"
-                    Command="{Binding SavePlateCommand}"
+                    Command="{Binding SaveVehicleCommand}"
                     BackgroundColor="SteelBlue"
                     WidthRequest="330"
                     HeightRequest="50"/>

@@ -1,9 +1,17 @@
 ﻿namespace CustomsDED.ViewModels
 {
-    public class DateSearchViewModel : BaseViewModel
+    using CommunityToolkit.Mvvm.Input;
+
+    public partial class DateSearchViewModel : BaseViewModel
     {
         public DateSearchViewModel()
         {
+        }
+
+        [RelayCommand]
+        private async Task ReportAProblem()
+        {
+            await SendEmailWithReport();
         }
     }
 }

@@ -4,6 +4,6 @@
     {
         public string LicensePlate { get; set; } = null!;
 
-        public string? AddictionInfo { get; set; }
+        public string? AdditionalInfo { get; set; }
     }
 }

@@ -1,9 +1,17 @@
 ﻿namespace CustomsDED.ViewModels
 {
-    public class VehicleSearchViewModel : BaseViewModel
+    using CommunityToolkit.Mvvm.Input;
+
+    public partial class VehicleSearchViewModel : BaseViewModel
     {
         public VehicleSearchViewModel()
         {
+        }
+
+        [RelayCommand]
+        private async Task ReportAProblem()
+        {
+            await SendEmailWithReport();
         }
     }
     

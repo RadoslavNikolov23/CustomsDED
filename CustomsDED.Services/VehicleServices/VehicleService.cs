@@ -28,7 +28,7 @@
                     Vehicle vehicle = new Vehicle()
                     {
                         LicensePlate = vehicleDTO.LicensePlate,
-                        AddictionInfo = vehicleDTO.AddictionInfo,
+                        AddictionInfo = vehicleDTO.AdditionalInfo,
                         DateOfInspection = DateTime.UtcNow,
                     };
 
@@ -59,7 +59,7 @@
                     vehiclesGetPlateDTOsList.Add(new VehicleGetPlateDTO()
                     {
                         LicensePlate = vehicle.LicensePlate,
-                        AddictionInfo = vehicle.AddictionInfo,
+                        AdditionalInfo = vehicle.AddictionInfo,
                         DateOfInspection = vehicle.DateOfInspection,
 
                     });
@@ -88,7 +88,7 @@
                     vehiclesGetDateDTOsList.Add(new VehicleGetDateDTO()
                     {
                         LicensePlate = vehicle.LicensePlate,
-                        AddictionInfo = vehicle.AddictionInfo,
+                        AdditionalInfo = vehicle.AddictionInfo,
                         DateOfInspection = vehicle.DateOfInspection,
 
                     });
