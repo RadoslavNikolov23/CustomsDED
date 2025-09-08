@@ -3,7 +3,6 @@ namespace CustomsDED
 {
     using CommunityToolkit.Maui;
     using CustomsDED.Data.Connection;
-    using CustomsDED.Data.Models;
     using CustomsDED.Data.Repository;
     using CustomsDED.Data.Repository.Contracts;
     using CustomsDED.Views;
@@ -20,6 +19,7 @@ namespace CustomsDED
                 .UseMauiApp<App>()
                 .UseOcr()
                 .UseSkiaSharp()
+                .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitCamera()
                 .ConfigureFonts(fonts =>
                 {
