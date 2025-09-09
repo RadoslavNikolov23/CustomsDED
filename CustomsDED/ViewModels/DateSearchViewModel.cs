@@ -14,7 +14,7 @@
     public partial class DateSearchViewModel : BaseViewModel
     {
         [ObservableProperty]
-        private DateTime inspectionDatePicker;
+        private DateTime inspectionDatePicker = DateTime.Today;
 
         [ObservableProperty]
         private ObservableCollection<PersonGetDateDTO> datePersonResultList = new();

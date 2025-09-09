@@ -9,46 +9,48 @@ public partial class LicensePlatePage : ContentPage
     private bool isCameraPreviewing = false;
 
     public LicensePlatePage(LicensePlateViewModel licensePlateViewModel)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         this.BindingContext = licensePlateViewModel;
     }
 
-    private async void OnAppearing(object sender, EventArgs e)
+    private async void OpenCameraViewClicked(object sender, EventArgs e)
     {
-        LicensePlateViewModel? vm = BindingContext as LicensePlateViewModel;
+        this.CameraViewGrid.IsVisible = true;
+        this.CameraViewButtos.IsVisible = true;
 
-        if (vm != null)
+        if (!this.isCameraPreviewing)
         {
-
-            if (vm.IsCameraViewVisible && !this.isCameraPreviewing)
+            PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
+            if (status != PermissionStatus.Granted)
             {
-                PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
-                if (status != PermissionStatus.Granted)
-                {
-                    await DisplayAlert(AppResources.Error, 
-                                       AppResources.CameraPermissionNotGranted, 
-                                       "OK");
+                await DisplayAlert(AppResources.Error,
+                                   AppResources.CameraPermissionNotGranted,
+                                   "OK");
+                CloseCameraCommon();
+                return;
+            }
 
-                    vm.CloseCameraViewCommand.Execute(null);
-                    return;
-                }
-
-                try
-                {
-                    // Start camera preview
-                    using CancellationTokenSource cts = new CancellationTokenSource();
-                    await this.CameraView.StartCameraPreview(cts.Token);
-                    this.isCameraPreviewing = true;
+            try
+            {
+                using CancellationTokenSource cts = new CancellationTokenSource();
+                await this.CameraView.StartCameraPreview(cts.Token);
+                this.isCameraPreviewing = true;
 
 
-                }
-                catch (Exception ex)
-                {
-                    await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
-                }
+            }
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
+                CloseCameraCommon();
             }
         }
+
+    }
+
+    private void CloseCameraViewClicked(object sender, EventArgs e)
+    {
+        CloseCameraCommon();
     }
 
     private async void TakePlatePictureClicked(object sender, EventArgs e)
@@ -60,16 +62,14 @@ public partial class LicensePlatePage : ContentPage
 
             if (stream == null)
             {
-                //TODO : User canceled or error, see what is best to do
-                await DisplayAlert(AppResources.Error, 
-                                   AppResources.CameraCaptureCanceled, 
+                await DisplayAlert(AppResources.Error,
+                                   AppResources.CameraCaptureCanceled,
                                    "OK");
                 return;
             }
 
-            // Convert to byte[]
             byte[] photoBytes;
-            using (var ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 await stream.CopyToAsync(ms);
                 photoBytes = ms.ToArray();
@@ -78,8 +78,6 @@ public partial class LicensePlatePage : ContentPage
 
             if (BindingContext is LicensePlateViewModel vm)
                 await vm.ProcessCapturedImageAsync(photoBytes);
-
-            
         }
         catch (Exception ex)
         {
@@ -88,15 +86,17 @@ public partial class LicensePlatePage : ContentPage
         }
         finally
         {
-            // Stop preview so we can reopen later
-            if (this.isCameraPreviewing)
-            {
-                this.CameraView.StopCameraPreview();
-                this.isCameraPreviewing = false;
-            }
-
-            if (BindingContext is LicensePlateViewModel vm)
-                vm.CloseCameraViewCommand.Execute(null);
+            CloseCameraCommon();
         }
+    }
+
+    private void CloseCameraCommon()
+    {
+
+        this.CameraView.StopCameraPreview();
+        this.isCameraPreviewing = false;
+
+        this.CameraViewGrid.IsVisible = false;
+        this.CameraViewButtos.IsVisible = false;
     }
 }

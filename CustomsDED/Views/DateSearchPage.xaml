@@ -7,7 +7,14 @@
              x:DataType="viewmodels:DateSearchViewModel"
              Title="{x:Static lang:AppResources.SearchByDate}"
              BackgroundColor="White">
-
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="iconemail.png"
+                     Command="{Binding ReportAProblemCommand}"
+                     Order="Primary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
+    
     <ScrollView>
         <VerticalStackLayout Padding="20"
                              Spacing="10">

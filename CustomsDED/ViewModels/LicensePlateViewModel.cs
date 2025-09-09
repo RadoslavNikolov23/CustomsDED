@@ -15,11 +15,11 @@
 
     public partial class LicensePlateViewModel : BaseViewModel
     {
-        [ObservableProperty]
-        private bool isCameraViewVisible = false;
+        //[ObservableProperty]
+        //private bool isCameraViewVisible = false;
 
-        [ObservableProperty]
-        private bool isCameraViewLayotVisible = false;
+        //[ObservableProperty]
+        //private bool isCameraViewLayotVisible = false;
 
 
         [ObservableProperty]
@@ -74,19 +74,19 @@
             }
         }
 
-        [RelayCommand]
-        private void OpenCameraView()
-        {
-            this.IsCameraViewVisible = true;
-            this.IsCameraViewLayotVisible = true;
-        }
+        //[RelayCommand]
+        //private void OpenCameraView()
+        //{
+        //    this.IsCameraViewVisible = true;
+        //    this.IsCameraViewLayotVisible = true;
+        //}
 
-        [RelayCommand]
-        private void CloseCameraView()
-        {
-            this.IsCameraViewVisible = false;
-            this.IsCameraViewLayotVisible = false;
-        }
+        //[RelayCommand]
+        //private void CloseCameraView()
+        //{
+        //    this.IsCameraViewVisible = false;
+        //    this.IsCameraViewLayotVisible = false;
+        //}
 
         [RelayCommand]
         private async Task SaveVehicle()

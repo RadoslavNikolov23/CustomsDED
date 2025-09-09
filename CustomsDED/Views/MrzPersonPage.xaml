@@ -16,13 +16,15 @@
                      Order="Primary"
                      Priority="0" />
     </ContentPage.ToolbarItems>
-    
+
     <ScrollView>
         <VerticalStackLayout Padding="20"
                              Spacing="15">
 
 
-            <Grid IsVisible="{Binding IsCameraViewVisible}">
+            <Grid x:Name = "CameraViewGrid"
+                  IsVisible = "false">
+
                 <toolkit:CameraView x:Name="CameraView"
                                     WidthRequest="350"
                                     HeightRequest="450"/>
@@ -34,7 +36,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"
                        HasShadow="False"/>
-                
+
                 <!-- Guide Frame with Text -->
                 <Frame Padding="5"
                        CornerRadius="8"
@@ -47,13 +49,14 @@
                        IsVisible="True">
                     <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
                            TextColor="White"
-                           FontSize="Small"
+                           FontSize="Micro"
                            FontAttributes="Italic"/>
                 </Frame>
             </Grid>
 
-            <HorizontalStackLayout  Spacing="10"
-                                    IsVisible="{Binding IsCameraViewLayotVisible}">
+            <HorizontalStackLayout x:Name = "CameraViewButtos"
+                                   Spacing="10"
+                                   IsVisible="false">
 
                 <Button Text="{x:Static lang:AppResources.TakePicture}"
                         Clicked="TakeMRZPictureClicked"
@@ -62,9 +65,9 @@
                         HeightRequest="50"/>
 
                 <Button Text="{x:Static lang:AppResources.CloseCamera}"
-                        Command="{Binding CloseCameraViewCommand}"
+                        Clicked="CloseCameraViewClicked"
                         BackgroundColor="SteelBlue"
-                        WidthRequest="165"
+                        WidthRequest="160"
                         HeightRequest="50"/>
 
             </HorizontalStackLayout>
@@ -79,74 +82,74 @@
                     <!--Person Name and Details-->
                     <Label Text="{x:Static lang:AppResources.PersonName} "
                            FontSize="Small"/>
-                    
+
                     <HorizontalStackLayout>
-                        <Entry Placeholder="First Name"
+                        <Entry Placeholder="{x:Static lang:AppResources.FirstName}"
                                Text="{Binding FirstNameEntry, Mode=TwoWay}"/>
-                        
-                        <Entry Placeholder="Middle Name"
+
+                        <Entry Placeholder="{x:Static lang:AppResources.MiddleName}"
                                Text="{Binding MiddleNameEntry, Mode=TwoWay}"
                                IsVisible="{Binding IsMiddleNameVisibleEntry}"/>
 
-                        <Entry Placeholder="Last Name"
+                        <Entry Placeholder="{x:Static lang:AppResources.LastName}"
                                Text="{Binding LastNameEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                     <!--Person Date of Birth and Nationality-->
-                    <Label Text="{x:Static lang:AppResources.PersonDateBirthAndNationality}  "
+                    <Label Text="{x:Static lang:AppResources.PersonDateBirthAndNationality} "
                            FontSize="Small"/>
                     <HorizontalStackLayout>
-                        <Entry Placeholder="Date of Birth (YYYY-MM-DD)"
+                        <Entry Placeholder="{x:Static lang:AppResources.DateOfBirth}"
                                Text="{Binding DateOfBirthEntry, Mode=TwoWay}"/>
-                        
-                        <Entry Placeholder="Nationality"
+
+                        <Entry Placeholder="{x:Static lang:AppResources.Nationality}"
                                Text="{Binding NationalityEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                     <!--Person ID and Sex-->
                     <Label Text="{x:Static lang:AppResources.PersonIdAndSex} "
                            FontSize="Small"/>
-                    
+
                     <HorizontalStackLayout>
-                        <Entry Placeholder="Personal ID"
+                        <Entry Placeholder="{x:Static lang:AppResources.PersonalId}"
                                Text="{Binding PersonalIdEntry, Mode=TwoWay}"/>
-                        
-                        <Entry Placeholder="Personal Sex"
+
+                        <Entry Placeholder="{x:Static lang:AppResources.Sex}"
                                Text="{Binding SexEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                     <!--Person Document Type, Expiration Date, Issuing country-->
                     <Label Text="{x:Static lang:AppResources.DocumentInformation} "
                            FontSize="Small"/>
-                    
+
                     <HorizontalStackLayout>
-                        <Entry Placeholder="Document Type"
+                        <Entry Placeholder="{x:Static lang:AppResources.DocumentType}"
                                Text="{Binding DocumentTypeEntry, Mode=TwoWay}"/>
-                        <Entry Placeholder="Document Number"
+                        <Entry Placeholder="{x:Static lang:AppResources.DocumentNumber}"
                                Text="{Binding DocumentNumberEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
                     <HorizontalStackLayout>
-                        <Entry Placeholder="Expiration Date"
+                        <Entry Placeholder="{x:Static lang:AppResources.ExpirationDate}"
                                Text="{Binding ExpirDateEntry, Mode=TwoWay}"/>
-                        <Entry Placeholder="Issuing Contry"
+                        <Entry Placeholder="{x:Static lang:AppResources.IssuingCountry}"
                                Text="{Binding IssuingContryEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                     <!--Person Addition information-->
                     <Label Text="{x:Static lang:AppResources.AdditionInfo}"
                            FontSize="Small"/>
-                    
+
                     <HorizontalStackLayout>
-                        <Entry Placeholder="Addition Info"
+                        <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
                                Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                 </VerticalStackLayout>
             </Frame>
-            
+
             <!-- Buttons -->
             <Button Text="{x:Static lang:AppResources.OpenCamera}"
-                    Command="{Binding OpenCameraViewCommand}"
+                    Clicked="OpenCameraViewClicked"
                     BackgroundColor="SteelBlue"
                     WidthRequest="330"
                     HeightRequest="50"/>

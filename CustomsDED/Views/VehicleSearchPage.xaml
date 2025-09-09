@@ -8,6 +8,12 @@
              Title="{x:Static lang:AppResources.VehicleSearch}"
              BackgroundColor="White">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="iconemail.png"
+                     Command="{Binding ReportAProblemCommand}"
+                     Order="Primary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
 
     <ScrollView>
         <VerticalStackLayout Padding="20"
@@ -22,8 +28,8 @@
 
                     <Label Text="{x:Static lang:AppResources.EnterVehicleLicensePlate}"
                            FontSize="Small"/>
-                    
-                    <Entry Placeholder="Enter License Plate or Info"
+
+                    <Entry Placeholder="{x:Static lang:AppResources.EnterLicensePlateInfo}"
                            Text="{Binding EnterLicensePlateEntry, Mode=TwoWay}"/>
                     <Button Text="{x:Static lang:AppResources.Search}"
                             Command="{Binding SearchVehicleCommand}"

@@ -9,46 +9,47 @@ public partial class MrzPersonPage : ContentPage
     private bool isCameraPreviewing = false;
 
     public MrzPersonPage(MrzPersonViewModel mrzPersonViewModel)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
         this.BindingContext = mrzPersonViewModel;
-
     }
 
-    private async void OnAppearing(object sender, EventArgs e)
+    private async void OpenCameraViewClicked(object sender, EventArgs e)
     {
-        MrzPersonViewModel? vm = BindingContext as MrzPersonViewModel;
+        this.CameraViewGrid.IsVisible = true;
+        this.CameraViewButtos.IsVisible = true;
 
-        if (vm != null)
+        if (!this.isCameraPreviewing)
         {
-
-            if (vm.IsCameraViewVisible && !this.isCameraPreviewing)
+            PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
+            if (status != PermissionStatus.Granted)
             {
-                PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
-                if (status != PermissionStatus.Granted)
-                {
-                    await DisplayAlert(AppResources.Error, 
-                                       AppResources.CameraPermissionNotGranted, 
-                                       "OK");
-                    vm.CloseCameraViewCommand.Execute(null);
-                    return;
-                }
+                await DisplayAlert(AppResources.Error,
+                                   AppResources.CameraPermissionNotGranted,
+                                   "OK");
+                CloseCameraCommon();
+                return;
+            }
 
-                try
-                {
-                    // Start camera preview
-                    using CancellationTokenSource cts = new CancellationTokenSource();
-                    await this.CameraView.StartCameraPreview(cts.Token);
-                    this.isCameraPreviewing = true;
+            try
+            {
+                using CancellationTokenSource cts = new CancellationTokenSource();
+                await this.CameraView.StartCameraPreview(cts.Token);
+                this.isCameraPreviewing = true;
 
 
-                }
-                catch (Exception ex)
-                {
-                    await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
-                }
+            }
+            catch (Exception ex)
+            {
+                await Logger.LogAsync(ex, "Error in OnAppearing, in the MrzPersonPage class.");
+                CloseCameraCommon();
             }
         }
+    }
+
+    private void CloseCameraViewClicked(object sender, EventArgs e)
+    {
+        CloseCameraCommon();
     }
 
     private async void TakeMRZPictureClicked(object sender, EventArgs e)
@@ -60,16 +61,14 @@ public partial class MrzPersonPage : ContentPage
 
             if (stream == null)
             {
-                //TODO : User canceled or error, see what is best to do
-                await DisplayAlert(AppResources.Error, 
+                await DisplayAlert(AppResources.Error,
                                    AppResources.CameraCaptureCanceled,
                                    "OK");
                 return;
             }
 
-            // Convert to byte[]
             byte[] photoBytes;
-            using (var ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 await stream.CopyToAsync(ms);
                 photoBytes = ms.ToArray();
@@ -78,8 +77,6 @@ public partial class MrzPersonPage : ContentPage
 
             if (BindingContext is MrzPersonViewModel vm)
                 await vm.ProcessCapturedImageAsync(photoBytes);
-
-
         }
         catch (Exception ex)
         {
@@ -88,16 +85,17 @@ public partial class MrzPersonPage : ContentPage
         }
         finally
         {
-
-            // Stop preview so we can reopen later
-            if (this.isCameraPreviewing)
-            {
-                this.CameraView.StopCameraPreview();
-                this.isCameraPreviewing = false;
-            }
-
-            if (BindingContext is MrzPersonViewModel vm)
-                vm.CloseCameraViewCommand.Execute(null);
+            CloseCameraCommon();
         }
+    }
+
+    private void CloseCameraCommon()
+    {
+
+        this.CameraView.StopCameraPreview();
+        this.isCameraPreviewing = false;
+
+        this.CameraViewGrid.IsVisible = false;
+        this.CameraViewButtos.IsVisible = false;
     }
 }

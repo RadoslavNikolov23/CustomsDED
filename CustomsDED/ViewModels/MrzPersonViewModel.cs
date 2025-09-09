@@ -16,11 +16,11 @@
 
     public partial class MrzPersonViewModel : BaseViewModel
     {
-        [ObservableProperty]
-        private bool isCameraViewVisible = false;
+        //[ObservableProperty]
+        //private bool isCameraViewVisible = false;
 
-        [ObservableProperty]
-        private bool isCameraViewLayotVisible = false;
+        //[ObservableProperty]
+        //private bool isCameraViewLayotVisible = false;
 
         [ObservableProperty]
         private string firstNameEntry = "";
@@ -146,19 +146,19 @@
         }
 
 
-        [RelayCommand]
-        private async Task OpenCameraView()
-        {
-            this.IsCameraViewVisible = true;
-            this.IsCameraViewLayotVisible = true;
-        }
+        //[RelayCommand]
+        //private async Task OpenCameraView()
+        //{
+        //    this.IsCameraViewVisible = true;
+        //    this.IsCameraViewLayotVisible = true;
+        //}
 
-        [RelayCommand]
-        private async Task CloseCameraView()
-        {
-            this.IsCameraViewVisible = false;
-            this.IsCameraViewLayotVisible = false;
-        }
+        //[RelayCommand]
+        //private async Task CloseCameraView()
+        //{
+        //    this.IsCameraViewVisible = false;
+        //    this.IsCameraViewLayotVisible = false;
+        //}
 
         [RelayCommand]
         private async Task SavePerson()
