@@ -1,8 +1,11 @@
 ﻿namespace CustomsDED.DTOs.VehicleDTOs
 {
-    public class VehicleGetPlateDTO : VehicleBaseDTO
+    using CommunityToolkit.Mvvm.ComponentModel;
+
+    public partial class VehicleGetPlateDTO : VehicleBaseDTO
     {
-        public DateTime? DateOfInspection { get; set; }
+        [ObservableProperty]
+        public DateTime? dateOfInspection;
 
     }
 }

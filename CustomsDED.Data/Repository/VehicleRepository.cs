@@ -24,10 +24,16 @@
             try
             {
 
+                //entities = await this.dbContext.Database
+                //                        .Table<Vehicle>()
+                //                        .Where(v => v.LicensePlate.ToLower().Contains(plateInput) ||
+                //                                    (v.AddictionInfo != null ? v.AddictionInfo.ToLower().Contains(plateInput) : false))
+                //                        .ToListAsync();
+
                 entities = await this.dbContext.Database
                                         .Table<Vehicle>()
-                                        .Where(v => v.LicensePlate.ToLower().Contains(plateInput) ||
-                                                    (v.AddictionInfo != null ? v.AddictionInfo.ToLower().Contains(plateInput) : false))
+                                        .Where(v => v.LicensePlate.ToUpper().Contains(plateInput) ||
+                                                    v.AddictionInfo.ToUpper().Contains(plateInput))
                                         .ToListAsync();
             }
             catch (Exception ex)

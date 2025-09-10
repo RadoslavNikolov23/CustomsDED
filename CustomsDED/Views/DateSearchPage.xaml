@@ -33,7 +33,7 @@
                     <DatePicker Date="{Binding InspectionDatePicker}"/>
 
                     <Button Text="{x:Static lang:AppResources.Search}"
-                            Command="{Binding SearchByDateClicked}"
+                            Command="{Binding SearchByDateCommand}"
                             BackgroundColor="SteelBlue"/>
                 </VerticalStackLayout>
             </Frame>

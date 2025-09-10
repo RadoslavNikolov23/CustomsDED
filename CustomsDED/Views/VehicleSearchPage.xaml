@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CustomsDED.DTOs.VehicleDTOs;assembly=CustomsDED.DTOs"
              xmlns:viewmodels="clr-namespace:CustomsDED.ViewModels"
              xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.VehicleSearchPage"
@@ -39,7 +40,7 @@
 
             <CollectionView ItemsSource="{Binding VehiclesResultList}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:VehicleGetPlateDTO">
                         <Frame BorderColor="Gray"
                                Padding="10"
                                Margin="5">

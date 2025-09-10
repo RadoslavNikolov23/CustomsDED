@@ -1,9 +1,13 @@
 ﻿namespace CustomsDED.DTOs.VehicleDTOs
 {
-    public class VehicleBaseDTO
-    {
-        public string LicensePlate { get; set; } = null!;
+    using CommunityToolkit.Mvvm.ComponentModel;
 
-        public string? AdditionalInfo { get; set; }
+    public partial class VehicleBaseDTO : ObservableObject
+    {
+        [ObservableProperty]
+        public string? licensePlate;
+
+        [ObservableProperty]
+        public string? additionalInfo;
     }
 }

@@ -33,9 +33,20 @@
             {
                 ICollection<VehicleGetPlateDTO> vehicleList = await this.vehicleService
                                                                         .GetVehiclesByTextAsync(queryText);
-                foreach (VehicleGetPlateDTO vehicle in vehicleList)
+
+                if (vehicleList != null && vehicleList.Count != 0)
                 {
-                    this.VehiclesResultList.Add(vehicle);
+                    this.VehiclesResultList.Clear();
+
+                    foreach (VehicleGetPlateDTO vehicle in vehicleList)
+                    {
+                        VehiclesResultList.Add(vehicle);
+                    }
+                }
+                else
+                {
+                    await ShowPopupMessage(AppResources.Information, 
+                                           AppResources.NoVehiclesFoundWithTheProvidedInfo);
                 }
             }
             catch (Exception ex)
