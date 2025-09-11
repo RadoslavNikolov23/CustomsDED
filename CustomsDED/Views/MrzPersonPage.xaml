@@ -47,7 +47,7 @@
                        Margin="10"
                        HasShadow="False"
                        IsVisible="True">
-                    <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
+                    <Label Text="{x:Static lang:AppResources.StartFromTopCenterBorder}"
                            TextColor="White"
                            FontSize="Micro"
                            FontAttributes="Italic"/>
@@ -114,8 +114,10 @@
                         <Entry Placeholder="{x:Static lang:AppResources.PersonalId}"
                                Text="{Binding PersonalIdEntry, Mode=TwoWay}"/>
 
-                        <Entry Placeholder="{x:Static lang:AppResources.Sex}"
-                               Text="{Binding SexEntry, Mode=TwoWay}"/>
+                        <Picker Title="{x:Static lang:AppResources.Sex}"
+                                ItemsSource="{Binding SexOptions}"
+                                SelectedItem="{Binding SelectedSex, Mode=TwoWay}"/>
+
                     </HorizontalStackLayout>
 
                     <!--Person Document Type, Expiration Date, Issuing country-->
@@ -132,7 +134,7 @@
                         <Entry Placeholder="{x:Static lang:AppResources.ExpirationDate}"
                                Text="{Binding ExpirDateEntry, Mode=TwoWay}"/>
                         <Entry Placeholder="{x:Static lang:AppResources.IssuingCountry}"
-                               Text="{Binding IssuingContryEntry, Mode=TwoWay}"/>
+                               Text="{Binding IssuingCountryEntry, Mode=TwoWay}"/>
                     </HorizontalStackLayout>
 
                     <!--Person Addition information-->

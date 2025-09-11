@@ -1,14 +1,20 @@
 ﻿namespace CustomsDED.DTOs.PersonDTOs
 {
-    public class PersonBaseDTO
+    using CommunityToolkit.Mvvm.ComponentModel;
+
+    public partial class PersonBaseDTO : ObservableObject
     {
-        public string FirstName { get; set; } = null!;
+        [ObservableProperty]
+        public string? firstName;
 
-        public string? MiddleName { get; set; }
+        [ObservableProperty]
+        public string? middleName;
 
-        public string LastName { get; set; } = null!;
+        [ObservableProperty]
+        public string? lastName;
 
-        public DateTime? DateOfBirth { get; set; }
+        [ObservableProperty]
+        public DateTime? dateOfBirth;
 
     }
 }

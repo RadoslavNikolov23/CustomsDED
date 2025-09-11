@@ -1,9 +1,13 @@
 ﻿namespace CustomsDED.DTOs.PersonDTOs
 {
-    public class PersonGetTextDTO : PersonBaseDTO
-    {
-        public string? PersonalId { get; set; }
+    using CommunityToolkit.Mvvm.ComponentModel;
 
-        public DateTime? DateOfInspection { get; set; }
+    public partial class PersonGetTextDTO : PersonBaseDTO
+    {
+        [ObservableProperty]
+        public string? personalId;
+
+        [ObservableProperty]
+        public DateTime? dateOfInspection;
     }
 }

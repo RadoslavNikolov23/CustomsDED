@@ -1,6 +1,7 @@
 ﻿namespace CustomsDED.ViewModels
 {
     using Plugin.Maui.OCR;
+    using System.Collections.ObjectModel;
     using CommunityToolkit.Mvvm.ComponentModel;
     using CommunityToolkit.Mvvm.Input;
 
@@ -8,20 +9,14 @@
     using CustomsDED.Common.Helpers;
     using CustomsDED.Data.Models;
     using CustomsDED.DTOs.PersonDTOs;
+    using CustomsDED.Resources.Localization;
     using CustomsDED.Services.MrzParsesServices;
     using CustomsDED.Services.PersonServices.Contract;
-    using CustomsDED.Resources.Localization;
 
     using static CustomsDED.Services.CropImageServices.CropImageService;
 
     public partial class MrzPersonViewModel : BaseViewModel
     {
-        //[ObservableProperty]
-        //private bool isCameraViewVisible = false;
-
-        //[ObservableProperty]
-        //private bool isCameraViewLayotVisible = false;
-
         [ObservableProperty]
         private string firstNameEntry = "";
 
@@ -44,7 +39,7 @@
         private string personalIdEntry = "";
 
         [ObservableProperty]
-        private string sexEntry = "";
+        private SexType? selectedSex;
 
         [ObservableProperty]
         private string documentTypeEntry = "";
@@ -56,10 +51,12 @@
         private string expirDateEntry = "";
 
         [ObservableProperty]
-        private string issuingContryEntry = "";
+        private string issuingCountryEntry = "";
 
         [ObservableProperty]
         private string additionInfoEntry = "";
+
+        public ObservableCollection<SexType> SexOptions { get; } = new(Enum.GetValues<SexType>());
 
         private readonly IOcrService ocrService;
 
@@ -78,12 +75,13 @@
 
             if (croppedBytes == null)
             {
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
-            OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes,tryHard: true);
+            OcrResult result = await this.ocrService
+                                        .RecognizeTextAsync(croppedBytes, tryHard: true);
 
             if (!result.Success)
             {
@@ -104,10 +102,14 @@
 
                 if (infoPerson == null)
                 {
-                    await ShowPopupMessage(AppResources.Error, 
+                    await ShowPopupMessage(AppResources.Error,
                                            AppResources.SomethingFailedPleaseTryAgain);
                     return;
                 }
+
+                await ShowPopupMessage(AppResources.Information,
+                                       AppResources.PictureTakenSeeResult);
+
 
                 this.FirstNameEntry = infoPerson.FirstName;
                 if (infoPerson.MiddleName != null)
@@ -121,18 +123,18 @@
                 }
                 this.LastNameEntry = infoPerson.LastName;
 
-                this.DateOfBirthEntry = infoPerson.DateOfBirth != null ? 
+                this.DateOfBirthEntry = infoPerson.DateOfBirth != null ?
                                                         $"{infoPerson.DateOfBirth:yyyy-MM-dd}" : "";
                 this.NationalityEntry = infoPerson.Nationality ?? "";
 
                 this.PersonalIdEntry = infoPerson.PersonalNumber ?? "";
-                this.SexEntry = infoPerson.SexType.ToString() ?? "";
+                this.SelectedSex = infoPerson.SexType ;
 
                 this.DocumentTypeEntry = infoPerson.DocumentType ?? "";
                 this.DocumentNumberEntry = infoPerson.DocumentNumber ?? "";
-                this.ExpirDateEntry = infoPerson.ExpirationDate != null ? 
+                this.ExpirDateEntry = infoPerson.ExpirationDate != null ?
                                                         $"{infoPerson.ExpirationDate:yyyy-MM-dd}" : "";
-                this.IssuingContryEntry = infoPerson.IssuingCountry ?? "";
+                this.IssuingCountryEntry = infoPerson.IssuingCountry ?? "";
 
                 this.AdditionInfoEntry = infoPerson.AdditionInfo ?? "";
 
@@ -146,19 +148,6 @@
         }
 
 
-        //[RelayCommand]
-        //private async Task OpenCameraView()
-        //{
-        //    this.IsCameraViewVisible = true;
-        //    this.IsCameraViewLayotVisible = true;
-        //}
-
-        //[RelayCommand]
-        //private async Task CloseCameraView()
-        //{
-        //    this.IsCameraViewVisible = false;
-        //    this.IsCameraViewLayotVisible = false;
-        //}
 
         [RelayCommand]
         private async Task SavePerson()
@@ -166,7 +155,12 @@
             DateTime? personDOB = MrzParserService.ParseDOBDate(this.DateOfBirthEntry);
             DateTime? personExpDate = MrzParserService.ParseExpirationDate(this.ExpirDateEntry);
 
-            bool isValidSex = Enum.TryParse<SexType>(this.SexEntry, out SexType sexEnum);
+            if(String.IsNullOrEmpty(this.FirstNameEntry) || String.IsNullOrEmpty(this.LastNameEntry))
+            {
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.FirstAndLastNameAreRequired);
+                return;
+            }
 
             try
             {
@@ -179,16 +173,17 @@
                                                 DateOfBirth = personDOB ?? null,
                                                 Nationality = this.NationalityEntry,
                                                 PersonalId = this.PersonalIdEntry,
-                                                SexType = isValidSex ? sexEnum : null,
+                                                SexType = this.SelectedSex,
                                                 DocumentType = this.DocumentTypeEntry,
                                                 DocumentNumber = this.DocumentNumberEntry,
                                                 ExpirationDate = personExpDate ?? null,
-                                                IssuingCountry = this.IssuingContryEntry,
+                                                IssuingCountry = this.IssuingCountryEntry,
                                                 AdditionInfo = this.AdditionInfoEntry,
                                             });
 
                 if (isSaved)
                 {
+                    ClearEntries();
                     await ShowPopupMessage(AppResources.Success,
                                            AppResources.PersonSavedSuccessfully);
                 }
@@ -200,10 +195,32 @@
             }
             catch (Exception ex)
             {
+                ClearEntries();
                 await Logger.LogAsync(ex, "Error in SavePerson, in the MrzPersonViewModel class.");
                 await ShowPopupMessage(AppResources.Error,
                                        AppResources.AnErrorOccurredWhileSavingPerson);
             }
+        }
+
+        public void ClearEntries()
+        {
+            this.FirstNameEntry = "";
+            this.MiddleNameEntry = "";
+            this.IsMiddleNameVisibleEntry = false;
+            this.LastNameEntry = "";
+
+            this.DateOfBirthEntry = "";
+            this.NationalityEntry = "";
+
+            this.PersonalIdEntry = "";
+            this.SelectedSex = null;
+
+            this.DocumentTypeEntry = "";
+            this.DocumentNumberEntry = "";
+            this.ExpirDateEntry = "";
+            this.IssuingCountryEntry = "";
+
+            this.AdditionInfoEntry = "";
         }
 
         [RelayCommand]

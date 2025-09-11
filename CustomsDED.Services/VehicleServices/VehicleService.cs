@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
     using CustomsDED.Common.Helpers;
     using CustomsDED.Data.Models;
     using CustomsDED.Data.Repository.Contracts;
@@ -27,8 +28,8 @@
                 {
                     Vehicle vehicle = new Vehicle()
                     {
-                        LicensePlate = vehicleDTO.LicensePlate,
-                        AddictionInfo = vehicleDTO.AdditionalInfo,
+                        LicensePlate = vehicleDTO.LicensePlate!.ToUpper(),
+                        AdditionalInfo = vehicleDTO.AdditionalInfo,
                         DateOfInspection = DateTime.UtcNow,
                     };
 
@@ -59,7 +60,7 @@
                     vehiclesGetPlateDTOsList.Add(new VehicleGetPlateDTO()
                     {
                         LicensePlate = vehicle.LicensePlate,
-                        AdditionalInfo = vehicle.AddictionInfo,
+                        AdditionalInfo = vehicle.AdditionalInfo,
                         DateOfInspection = vehicle.DateOfInspection,
 
                     });
@@ -88,7 +89,7 @@
                     vehiclesGetDateDTOsList.Add(new VehicleGetDateDTO()
                     {
                         LicensePlate = vehicle.LicensePlate,
-                        AdditionalInfo = vehicle.AddictionInfo,
+                        AdditionalInfo = vehicle.AdditionalInfo,
                         DateOfInspection = vehicle.DateOfInspection,
 
                     });

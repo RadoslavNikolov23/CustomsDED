@@ -45,7 +45,7 @@
                                Padding="10"
                                Margin="5">
                             <VerticalStackLayout Spacing="10">
-                                
+
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="{x:Static lang:AppResources.VehicleNumber}"
                                            FontSize="Small"/>
@@ -54,7 +54,7 @@
                                            FontAttributes="Bold"
                                            FontSize="Small"/>
                                 </HorizontalStackLayout>
-                                
+
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="{x:Static lang:AppResources.AdditionInfo}"
                                            FontSize="Small"/>
@@ -62,11 +62,11 @@
                                            TextColor="Black"
                                            FontSize="Small"/>
                                 </HorizontalStackLayout>
-                                
+
                                 <HorizontalStackLayout Spacing="10">
                                     <Label Text="{x:Static lang:AppResources.DateOfCheck} "
                                            FontSize="Small"/>
-                                    <Label Text="{Binding DateOfInspection, StringFormat='{0:yyyy/MM/dd}'}" 
+                                    <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
                                 </HorizontalStackLayout>

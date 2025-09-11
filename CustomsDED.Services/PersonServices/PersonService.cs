@@ -30,17 +30,17 @@
                 {
                     Person person = new Person()
                     {
-                        FirstName = personDTO.FirstName,
-                        MiddleName = personDTO.MiddleName,
-                        LastName = personDTO.LastName,
+                        FirstName = personDTO.FirstName!.ToUpper(),
+                        MiddleName = personDTO.MiddleName == null ? null : personDTO.MiddleName.ToUpper(),
+                        LastName = personDTO.LastName!.ToUpper(),
                         DateOfBirth = personDTO.DateOfBirth,
-                        Nationality = personDTO.Nationality,
-                        PersonalNumber = personDTO.PersonalId,
+                        Nationality = personDTO.Nationality == null ? null : personDTO.Nationality.ToUpper(),
+                        PersonalNumber = personDTO.PersonalId == null ? null : personDTO.PersonalId.ToUpper(),
                         SexType = personDTO.SexType,
-                        DocumentNumber = personDTO.DocumentNumber,
-                        DocumentType = personDTO.DocumentType,
+                        DocumentNumber = personDTO.DocumentNumber == null ? null : personDTO.DocumentNumber.ToUpper(),
+                        DocumentType = personDTO.DocumentType == null ? null : personDTO.DocumentType.ToUpper(),
                         ExpirationDate = personDTO.ExpirationDate,
-                        IssuingCountry = personDTO.IssuingCountry,
+                        IssuingCountry = personDTO.IssuingCountry == null ? null : personDTO.IssuingCountry.ToUpper(),
                         AdditionInfo = personDTO.AdditionInfo,
                         DateOfInspection = DateTime.UtcNow,
                     };
@@ -63,8 +63,8 @@
         {
             try
             {
-                IEnumerable<Person> personEntitiesList =
-                                        await personRepo.GetAllPersonsByTextInput(textInput.ToLower());
+                IEnumerable<Person> personEntitiesList = await personRepo
+                                                            .GetAllPersonsByTextInput(textInput.ToLower());
 
                 ICollection<PersonGetTextDTO> personGetTextDTOsList = new List<PersonGetTextDTO>();
 
@@ -96,8 +96,8 @@
         {
             try
             {
-                IEnumerable<Person> personEntitiesList =
-                                        await personRepo.GetAllPersonsByDate(pickedDate);
+                IEnumerable<Person> personEntitiesList = await personRepo
+                                                            .GetAllPersonsByDate(pickedDate);
 
                 ICollection<PersonGetDateDTO> personGetDateDTOsList = new List<PersonGetDateDTO>();
 
@@ -122,6 +122,7 @@
                 throw;
             }
         }
+
 
     }
 }

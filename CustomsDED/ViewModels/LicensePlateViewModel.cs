@@ -15,13 +15,6 @@
 
     public partial class LicensePlateViewModel : BaseViewModel
     {
-        //[ObservableProperty]
-        //private bool isCameraViewVisible = false;
-
-        //[ObservableProperty]
-        //private bool isCameraViewLayotVisible = false;
-
-
         [ObservableProperty]
         private string plateLicenseEntry = "";
 
@@ -32,13 +25,11 @@
 
         private readonly IVehicleService vehicleService;
 
-
         public LicensePlateViewModel(IOcrService ocrService, IVehicleService vehicleService)
         {
             this.ocrService = ocrService;
             this.vehicleService = vehicleService;
         }
-
 
         public async Task ProcessCapturedImageAsync(byte[] photoBytes)
         {
@@ -46,7 +37,7 @@
 
             if (croppedBytes == null)
             {
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
@@ -55,79 +46,97 @@
 
             if (!result.Success)
             {
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.ScanDocumentFailedPleaseTryAgain);
                 return;
             }
 
-            string? plate = ExtractLicensePlate(result.AllText);
+            string? plate = await ExtractLicensePlate(result.AllText);
 
             if (plate == null)
             {
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
-                this.PlateLicenseEntry = result.AllText;
+                if (result.AllText != null)
+                {
+
+                    await ShowPopupMessage(AppResources.Error,
+                                           AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
+                    this.PlateLicenseEntry = result.AllText;
+                }
+                else
+                {
+                    await ShowPopupMessage(AppResources.Error,
+                                           AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain);
+                }
+
             }
             else
             {
+                await ShowPopupMessage(AppResources.Information,
+                                       AppResources.PictureTakenSeeResult);
+
                 this.PlateLicenseEntry = plate;
             }
         }
-
-        //[RelayCommand]
-        //private void OpenCameraView()
-        //{
-        //    this.IsCameraViewVisible = true;
-        //    this.IsCameraViewLayotVisible = true;
-        //}
-
-        //[RelayCommand]
-        //private void CloseCameraView()
-        //{
-        //    this.IsCameraViewVisible = false;
-        //    this.IsCameraViewLayotVisible = false;
-        //}
 
         [RelayCommand]
         private async Task SaveVehicle()
         {
             try
             {
+                if (string.IsNullOrEmpty(this.PlateLicenseEntry))
+                {
+                      await ShowPopupMessage(AppResources.Error,
+                                             AppResources.EnterVehicleLicensePlateFirst);
+                    return;
+                }
+
+                string cleanedPlate = Regex.Replace(this.PlateLicenseEntry.ToUpper(), @"[^A-Z0-9]", "");
+
                 bool isSaved = await this.vehicleService
                                                 .AddVehicleAsync(new VehicleAddDTO
                                                 {
-                                                    LicensePlate = this.PlateLicenseEntry,
+                                                    LicensePlate = cleanedPlate,
                                                     AdditionalInfo = this.AdditionInfoEntry
                                                 });
 
                 if (isSaved)
                 {
-                    await ShowPopupMessage(AppResources.Success, 
+                    ClearEntries();
+                    await ShowPopupMessage(AppResources.Success,
                                            AppResources.VehicleSavedSuccessfully);
                 }
                 else
                 {
-                    await ShowPopupMessage(AppResources.Error, 
+                    await ShowPopupMessage(AppResources.Error,
                                            AppResources.FailedToSaveVehiclePleaseTryAgain);
                 }
             }
             catch (Exception ex)
             {
+                ClearEntries();
                 await Logger.LogAsync(ex, "Error in SaveVehicle, in the LicensePlateViewModel class.");
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.AnErrorOccurredWhileSavingVehicle);
             }
         }
 
-        private string? ExtractLicensePlate(string ocrText)
+        private void ClearEntries()
         {
-            string cleanText = ocrText
-                                .ToUpper()
-                                .Replace(" ", "")
-                                .Replace("-", "")
-                                .Replace("\n", "")
-                                .Replace("\r", "");
+            this.PlateLicenseEntry = "";
+            this.AdditionInfoEntry = "";
+        }
 
+        private async Task<string?> ExtractLicensePlate(string ocrText)
+        {
+            await Task.Yield();
+
+            // Strip everything except A–Z and 0–9
+            string cleanText = Regex.Replace(ocrText.ToUpper(), @"[^A-Z0-9]", "");
+
+            // Remove country prefix if present
+            cleanText = Regex.Replace(cleanText, @"^(BG|RO|TR)", "");
+
+            // Candidates = continuous alphanumeric strings
             List<string> candidates = Regex.Matches(cleanText, @"[A-Z0-9]+")
                                            .Select(m => m.Value)
                                            .ToList();
@@ -147,5 +156,6 @@
         {
             await SendEmailWithReport();
         }
+
     }
 }

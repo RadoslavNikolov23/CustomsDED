@@ -1,13 +1,13 @@
 ﻿namespace CustomsDED.Data.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     using CustomsDED.Common.Helpers;
     using CustomsDED.Data.Connection;
     using CustomsDED.Data.Models;
     using CustomsDED.Data.Repository.Contracts;
-
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
     public class VehicleRepository : BaseAsyncRepository<Vehicle>, IVehicleRepository
     {
@@ -23,17 +23,10 @@
 
             try
             {
-
-                //entities = await this.dbContext.Database
-                //                        .Table<Vehicle>()
-                //                        .Where(v => v.LicensePlate.ToLower().Contains(plateInput) ||
-                //                                    (v.AddictionInfo != null ? v.AddictionInfo.ToLower().Contains(plateInput) : false))
-                //                        .ToListAsync();
-
                 entities = await this.dbContext.Database
                                         .Table<Vehicle>()
                                         .Where(v => v.LicensePlate.ToUpper().Contains(plateInput) ||
-                                                    v.AddictionInfo.ToUpper().Contains(plateInput))
+                                                    (v.AdditionalInfo ?? "").ToUpper().Contains(plateInput))
                                         .ToListAsync();
             }
             catch (Exception ex)
@@ -51,12 +44,15 @@
 
             IEnumerable<Vehicle> entities = new List<Vehicle>();
 
+            DateTime nextDay = pickedDate.AddDays(1);
+
             try
             {
 
                 entities = await this.dbContext.Database
                                         .Table<Vehicle>()
-                                        .Where(v => v.DateOfInspection == pickedDate.Date)
+                                        .Where(p => p.DateOfInspection >= pickedDate
+                                            && p.DateOfInspection < nextDay)
                                         .ToListAsync();
             }
             catch (Exception ex)

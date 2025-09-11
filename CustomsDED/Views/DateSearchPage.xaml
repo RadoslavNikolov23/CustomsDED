@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:CustomsDED.ViewModels"
+             xmlns:modelsPerson="clr-namespace:CustomsDED.DTOs.PersonDTOs;assembly=CustomsDED.DTOs"
+             xmlns:modelsVehicle="clr-namespace:CustomsDED.DTOs.VehicleDTOs;assembly=CustomsDED.DTOs"
              xmlns:lang="clr-namespace:CustomsDED.Resources.Localization"
              x:Class="CustomsDED.Views.DateSearchPage"
              x:DataType="viewmodels:DateSearchViewModel"
@@ -14,17 +16,17 @@
                      Order="Primary"
                      Priority="0" />
     </ContentPage.ToolbarItems>
-    
+
     <ScrollView>
         <VerticalStackLayout Padding="20"
                              Spacing="10">
 
             <Frame
-                    BackgroundColor="White"
-                    BorderColor="Gray"
-                    CornerRadius="12"
-                    Padding="10">
-                
+                BackgroundColor="White"
+                BorderColor="Gray"
+                CornerRadius="12"
+                Padding="10">
+
                 <VerticalStackLayout Spacing="10">
 
                     <Label Text="{x:Static lang:AppResources.PickDate}"
@@ -39,11 +41,11 @@
             </Frame>
 
             <Frame
-                    BackgroundColor="White"
-                    BorderColor="Gray"
-                    CornerRadius="12"
-                    Padding="10">
-                
+                BackgroundColor="White"
+                BorderColor="Gray"
+                CornerRadius="12"
+                Padding="10">
+
                 <VerticalStackLayout>
                     <Label Text="{x:Static lang:AppResources.Vehicles}"
                            FontAttributes="Bold"
@@ -51,54 +53,23 @@
 
                     <CollectionView ItemsSource="{Binding DateVehiclesResultList}">
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame 
-                                        BorderColor="GhostWhite"
-                                        Padding="10"
-                                        Margin="5">
-                                    
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{Binding LicensePlate}" 
-                                               TextColor="Black"
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding AdditionalInfo}" 
-                                                TextColor="Black"/>
-                                        <Border/>
-                                        <Label Text="{Binding DateOfInspection}" 
-                                               TextColor="Black"/>
-                                    </HorizontalStackLayout>
-                                </Frame>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </Frame>
-
-            <Frame
-                    BackgroundColor="White"
-                    BorderColor="Gray"
-                    CornerRadius="12"
-                    Padding="10">
-
-                <VerticalStackLayout>
-                    <Label Text="{x:Static lang:AppResources.Persons}"
-                           FontAttributes="Bold"
-                           FontSize="Small"/>
-                    
-                    <CollectionView  ItemsSource="{Binding DatePersonResultList}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Frame  BorderColor="GhostWhite"
+                            <DataTemplate x:DataType="modelsVehicle:VehicleGetDateDTO">
+                                <Frame
+                                    BorderColor="GhostWhite"
                                     Padding="10"
                                     Margin="5">
-                                    
+
                                     <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{Binding FirstName}"  
+                                        <Label Text="{Binding LicensePlate}"
                                                TextColor="Black"
                                                FontAttributes="Bold"/>
-
-                                        <Label Text="{Binding LastName}" 
+                                        <Label Text="{Binding AdditionalInfo}"
                                                TextColor="Black"/>
+
+                                        <Label Text="{Binding isEmptyVehicleList}"
+                                               TextColor="Black"
+                                               FontAttributes = "Italic"
+                                               IsVisible = "{Binding isEmptyVehicleListVisible}"/>
                                         <Border/>
                                         <Label Text="{Binding DateOfInspection}"
                                                TextColor="Black"/>
@@ -110,7 +81,48 @@
                 </VerticalStackLayout>
             </Frame>
 
+            <Frame
+                BackgroundColor="White"
+                BorderColor="Gray"
+                CornerRadius="12"
+                Padding="10">
+
+                <VerticalStackLayout>
+                    <Label Text="{x:Static lang:AppResources.Persons}"
+                           FontAttributes="Bold"
+                           FontSize="Small"/>
+
+                    <CollectionView  ItemsSource="{Binding DatePersonResultList}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="modelsPerson:PersonGetDateDTO">
+                                <Frame  BorderColor="GhostWhite"
+                                        Padding="10"
+                                        Margin="5">
+
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{Binding FirstName}"
+                                               TextColor="Black"
+                                               FontAttributes="Bold"/>
+
+                                        <Label Text="{Binding LastName}"
+                                               TextColor="Black"/>
+
+                                        <Label Text="{Binding isEmptyPersonList}"
+                                               TextColor="Black"
+                                               FontAttributes = "Italic"
+                                               IsVisible = "{Binding isEmptyPersonListVisible}"/>
+                                        <Border/>
+                                        <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}"
+                                               TextColor="Black"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
         </VerticalStackLayout>
     </ScrollView>
-    
+
 </ContentPage>

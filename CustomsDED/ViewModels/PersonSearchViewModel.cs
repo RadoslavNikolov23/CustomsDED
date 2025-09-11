@@ -33,15 +33,32 @@
             {
                 ICollection<PersonGetTextDTO> personList = await this.personService
                                                                         .GetPersonsByTextAsync(queryText);
-                foreach (PersonGetTextDTO person in personList)
+
+
+                if (personList != null && personList.Count > 0)
                 {
-                    this.PersonResultList.Add(person);
+                    this.PersonResultList.Clear();
+
+                    foreach (PersonGetTextDTO person in personList)
+                    {
+                        this.PersonResultList.Add(person);
+                    }
                 }
+                else
+                {
+                    await ShowPopupMessage(AppResources.Information,
+                                           AppResources.NoPersonsFoundWithTheProvidedInfo);
+                }
+
+                this.EnterPersonInfoEntry = "";
+
             }
             catch (Exception ex)
             {
+                this.PersonResultList.Clear();
+                this.EnterPersonInfoEntry = "";
                 await Logger.LogAsync(ex, "Error in SearchPerson, in the PersonSearchViewModel class");
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.AnErrorOccurredWhileSearchingPerson);
             }
         }

@@ -26,9 +26,9 @@
 
                 entities = await this.dbContext.Database
                                         .Table<Person>()
-                                        .Where(p => p.FirstName.ToLower().Contains(textInput) ||
-                                                    p.LastName.ToLower().Contains(textInput) ||
-                                                    (p.PersonalNumber != null ? p.PersonalNumber.ToLower().Contains(textInput) : false))
+                                        .Where(p => p.FirstName.ToUpper().Contains(textInput) ||
+                                                    p.LastName.ToUpper().Contains(textInput) ||
+                                                    (p.AdditionInfo ?? "").ToUpper().Contains(textInput))
                                         .ToListAsync();
             }
             catch (Exception ex)
@@ -46,17 +46,20 @@
 
             IEnumerable<Person> entities = new List<Person>();
 
+            DateTime nextDay = pickedDate.AddDays(1);
+
             try
             {
 
                 entities = await this.dbContext.Database
                                         .Table<Person>()
-                                        .Where(p => p.DateOfInspection == pickedDate.Date)
+                                        .Where(p => p.DateOfInspection >= pickedDate 
+                                            && p.DateOfInspection<nextDay)
                                         .ToListAsync();
             }
             catch (Exception ex)
             {
-                await Logger.LogAsync(ex, "Error in GetAllVehiclesByDate, in the PersonRepository class.");
+                await Logger.LogAsync(ex, "Error in GetAllPersonsByDate, in the PersonRepository class.");
                 throw;
             }
 

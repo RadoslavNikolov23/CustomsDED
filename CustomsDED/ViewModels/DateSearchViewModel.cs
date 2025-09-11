@@ -17,6 +17,18 @@
         private DateTime inspectionDatePicker = DateTime.Today;
 
         [ObservableProperty]
+        private string isEmptyVehicleList = "";
+
+        [ObservableProperty]
+        private bool isEmptyVehicleListVisible = false;
+
+        [ObservableProperty]
+        private string isEmptyPersonList = "";
+
+        [ObservableProperty]
+        private bool isEmptyPersonListVisible = false;
+
+        [ObservableProperty]
         private ObservableCollection<PersonGetDateDTO> datePersonResultList = new();
 
         [ObservableProperty]
@@ -32,7 +44,7 @@
             this.personService = personService;
             this.vehicleService = vehicleService;
         }
-        
+
         [RelayCommand]
         private async Task SearchByDate()
         {
@@ -40,25 +52,59 @@
 
             try
             {
+                ICollection<VehicleGetDateDTO> vehicleList = await this.vehicleService
+                                                                   .GetVehiclesByDateAsync(datePicked);
+
+                if (vehicleList != null && vehicleList.Count > 0)
+                {
+                    this.DateVehiclesResultList.Clear();
+                    this.IsEmptyVehicleListVisible = false;
+
+                    foreach (VehicleGetDateDTO vehicle in vehicleList)
+                    {
+                        this.DateVehiclesResultList.Add(vehicle);
+                    }
+                }
+                else
+                {
+                    this.DateVehiclesResultList.Clear();
+                    string isEmptyVehicleList = String.Format(AppResources.NoVehiclesFoundForDate,  
+                                                              datePicked.ToString("dd/MM/yyyy"));
+                    this.IsEmptyVehicleListVisible = true;
+                }
+
                 ICollection<PersonGetDateDTO> personList = await this.personService
                                                                         .GetPersonsByDateAsync(datePicked);
 
-                ICollection<VehicleGetDateDTO> vehicleList = await this.vehicleService
-                                                                        .GetVehiclesByDateAsync(datePicked);
-                foreach (PersonGetDateDTO person in personList)
+                if (personList != null && personList.Count > 0)
                 {
-                    this.DatePersonResultList.Add(person);
+                    this.DatePersonResultList.Clear();
+                    this.IsEmptyVehicleListVisible = false;
+
+
+                    foreach (PersonGetDateDTO person in personList)
+                    {
+                        this.DatePersonResultList.Add(person);
+                    }
+                }
+                else
+                {
+                    this.DatePersonResultList.Clear();
+
+                    string isEmptyVehicleList = String.Format(AppResources.NoPersonsFoundForDate,
+                                                              datePicked.ToString("dd/MM/yyyy"));
+                    this.IsEmptyVehicleListVisible = true;
                 }
 
-                foreach (VehicleGetDateDTO vehicle in vehicleList)
-                {
-                    this.DateVehiclesResultList.Add(vehicle);
-                }
+
             }
             catch (Exception ex)
             {
+                this.DateVehiclesResultList.Clear();
+                this.DatePersonResultList.Clear();
+
                 await Logger.LogAsync(ex, "Error in SearchByDate, in the DateSearchViewModel class");
-                await ShowPopupMessage(AppResources.Error, 
+                await ShowPopupMessage(AppResources.Error,
                                        AppResources.AnErrorOccurredWhileSearching);
             }
         }

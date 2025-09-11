@@ -1,13 +1,12 @@
 namespace CustomsDED.Views;
 
+using CommunityToolkit.Maui.Extensions;
 using CustomsDED.Common.Helpers;
 using CustomsDED.Resources.Localization;
 using CustomsDED.ViewModels;
 
 public partial class LicensePlatePage : ContentPage
 {
-    private bool isCameraPreviewing = false;
-
     public LicensePlatePage(LicensePlateViewModel licensePlateViewModel)
     {
         InitializeComponent();
@@ -19,49 +18,49 @@ public partial class LicensePlatePage : ContentPage
         this.CameraViewGrid.IsVisible = true;
         this.CameraViewButtos.IsVisible = true;
 
-        if (!this.isCameraPreviewing)
+        PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
+        if (status != PermissionStatus.Granted)
         {
-            PermissionStatus status = await Permissions.RequestAsync<Permissions.Camera>();
-            if (status != PermissionStatus.Granted)
-            {
-                await DisplayAlert(AppResources.Error,
-                                   AppResources.CameraPermissionNotGranted,
-                                   "OK");
-                CloseCameraCommon();
-                return;
-            }
-
-            try
-            {
-                using CancellationTokenSource cts = new CancellationTokenSource();
-                await this.CameraView.StartCameraPreview(cts.Token);
-                this.isCameraPreviewing = true;
-
-
-            }
-            catch (Exception ex)
-            {
-                await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
-                CloseCameraCommon();
-            }
+            await DisplayAlert(AppResources.Error,
+                               AppResources.CameraPermissionNotGranted,
+                               "OK");
+            await CloseCameraCommon();
+            return;
         }
 
+        try
+        {
+            using CancellationTokenSource cts = new CancellationTokenSource();
+            await this.CameraView.StartCameraPreview(cts.Token);
+
+
+        }
+        catch (Exception ex)
+        {
+            await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
+            await CloseCameraCommon();
+        }
     }
 
-    private void CloseCameraViewClicked(object sender, EventArgs e)
+    private async void CloseCameraViewClicked(object sender, EventArgs e)
     {
-        CloseCameraCommon();
+        await CloseCameraCommon();
     }
 
     private async void TakePlatePictureClicked(object sender, EventArgs e)
     {
+        CreatingPopup creatingPopup = new CreatingPopup();
+        Shell.Current.ShowPopup(creatingPopup);
+
         try
         {
+
             using CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
             Stream stream = await this.CameraView.CaptureImage(cts.Token);
 
             if (stream == null)
             {
+                await creatingPopup.CloseAsync();
                 await DisplayAlert(AppResources.Error,
                                    AppResources.CameraCaptureCanceled,
                                    "OK");
@@ -78,25 +77,30 @@ public partial class LicensePlatePage : ContentPage
 
             if (BindingContext is LicensePlateViewModel vm)
                 await vm.ProcessCapturedImageAsync(photoBytes);
+
+            await creatingPopup.CloseAsync();
+
         }
         catch (Exception ex)
         {
+            await creatingPopup.CloseAsync();
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the LicensePlatePage class.");
 
         }
         finally
         {
-            CloseCameraCommon();
+            //Do i need a creatingPopup.Close(); here? See other options for a if condition
+            await CloseCameraCommon();
         }
     }
 
-    private void CloseCameraCommon()
+    private async Task CloseCameraCommon()
     {
-
-        this.CameraView.StopCameraPreview();
-        this.isCameraPreviewing = false;
+        await Task.Yield();
 
         this.CameraViewGrid.IsVisible = false;
         this.CameraViewButtos.IsVisible = false;
+
+        this.CameraView.StopCameraPreview();
     }
 }

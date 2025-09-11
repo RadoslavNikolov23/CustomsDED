@@ -34,7 +34,7 @@
                 ICollection<VehicleGetPlateDTO> vehicleList = await this.vehicleService
                                                                         .GetVehiclesByTextAsync(queryText);
 
-                if (vehicleList != null && vehicleList.Count != 0)
+                if (vehicleList != null && vehicleList.Count > 0)
                 {
                     this.VehiclesResultList.Clear();
 
@@ -45,12 +45,16 @@
                 }
                 else
                 {
-                    await ShowPopupMessage(AppResources.Information, 
+                    await ShowPopupMessage(AppResources.Information,
                                            AppResources.NoVehiclesFoundWithTheProvidedInfo);
                 }
+
+                this.EnterLicensePlateEntry = "";
             }
             catch (Exception ex)
             {
+                this.VehiclesResultList.Clear();
+                this.EnterLicensePlateEntry = "";
                 await Logger.LogAsync(ex, "Error in SearchVehicle, in the VehicleSearchViewModel class");
                 await ShowPopupMessage(AppResources.Error,
                                        AppResources.AnErrorOccurredWhileSearchingVehicle);

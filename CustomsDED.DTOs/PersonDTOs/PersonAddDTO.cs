@@ -1,8 +1,9 @@
 ﻿namespace CustomsDED.DTOs.PersonDTOs
 {
+    using CommunityToolkit.Mvvm.ComponentModel;
     using CustomsDED.Common.Enums;
 
-    public class PersonAddDTO : PersonBaseDTO
+    public partial class PersonAddDTO : PersonBaseDTO
     {
         // public string FirstName { get; set; } = null!;
 
@@ -15,21 +16,29 @@
 
         //  public DateTime? DateOfInspection { get; set; }
 
-        public string? Nationality { get; set; }
+        [ObservableProperty]
+        public string? nationality;
 
-        public string? PersonalId { get; set; }
+        [ObservableProperty]
+        public string? personalId;
 
-        public string? DocumentNumber { get; set; }
+        [ObservableProperty]
+        public string? documentNumber;
 
-        public string? DocumentType { get; set; }
+        [ObservableProperty]
+        public string? documentType;
 
-        public DateTime? ExpirationDate { get; set; }
+        [ObservableProperty]
+        public DateTime? expirationDate;
 
-        public string? IssuingCountry { get; set; }
+        [ObservableProperty]
+        public string? issuingCountry;
 
-        public SexType? SexType { get; set; }
+        [ObservableProperty]
+        public SexType? sexType;
 
-        public string? AdditionInfo { get; set; }
+        [ObservableProperty]
+        public string? additionInfo;
 
     }
 }
