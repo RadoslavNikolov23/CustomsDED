@@ -9,7 +9,7 @@
              x:DataType="viewmodels:DateSearchViewModel"
              Title="{x:Static lang:AppResources.SearchByDate}"
              BackgroundColor="White">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="iconemail.png"
                      Command="{Binding ReportAProblemCommand}"
@@ -58,26 +58,28 @@
                                     BorderColor="GhostWhite"
                                     Padding="10"
                                     Margin="5">
-
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{Binding LicensePlate}"
+                                    <ScrollView Orientation="Horizontal">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{Binding LicensePlate}"
                                                TextColor="Black"
                                                FontAttributes="Bold"/>
-                                        <Label Text="{Binding AdditionalInfo}"
+                                            <Label Text="{Binding AdditionalInfo}"
                                                TextColor="Black"/>
 
-                                        <Label Text="{Binding isEmptyVehicleList}"
+                                            <Label Text="{Binding isEmptyVehicleList}"
                                                TextColor="Black"
                                                FontAttributes = "Italic"
                                                IsVisible = "{Binding isEmptyVehicleListVisible}"/>
-                                        <Border/>
-                                        <Label Text="{Binding DateOfInspection}"
+                                            <Border/>
+                                            <Label Text="{Binding DateOfInspection}"
                                                TextColor="Black"/>
-                                    </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
+
                 </VerticalStackLayout>
             </Frame>
 
@@ -98,23 +100,24 @@
                                 <Frame  BorderColor="GhostWhite"
                                         Padding="10"
                                         Margin="5">
-
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{Binding FirstName}"
+                                    <ScrollView Orientation="Horizontal">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{Binding FirstName}"
                                                TextColor="Black"
                                                FontAttributes="Bold"/>
 
-                                        <Label Text="{Binding LastName}"
+                                            <Label Text="{Binding LastName}"
                                                TextColor="Black"/>
 
-                                        <Label Text="{Binding isEmptyPersonList}"
+                                            <Label Text="{Binding isEmptyPersonList}"
                                                TextColor="Black"
                                                FontAttributes = "Italic"
                                                IsVisible = "{Binding isEmptyPersonListVisible}"/>
-                                        <Border/>
-                                        <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}"
+                                            <Border/>
+                                            <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}"
                                                TextColor="Black"/>
-                                    </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

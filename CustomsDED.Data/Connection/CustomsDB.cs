@@ -20,8 +20,8 @@
                 database = new SQLiteAsyncConnection(DatabasePath, Flags);
 
                 //---------For Deleting the tables and starting over for test purpose only!!-----------
-                //await database.DropTableAsync<Person>();
-                // await database.DropTableAsync<Vehicle>();
+               //await database.DropTableAsync<Person>();
+               // await database.DropTableAsync<Vehicle>();
 
                 await database.CreateTableAsync<Person>();
                 await database.CreateTableAsync<Vehicle>();

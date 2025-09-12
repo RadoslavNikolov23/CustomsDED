@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Extensions;
 using CustomsDED.Common.Helpers;
 using CustomsDED.Resources.Localization;
 using CustomsDED.ViewModels;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 public partial class LicensePlatePage : ContentPage
 {
@@ -33,10 +34,12 @@ public partial class LicensePlatePage : ContentPage
             using CancellationTokenSource cts = new CancellationTokenSource();
             await this.CameraView.StartCameraPreview(cts.Token);
 
-
         }
         catch (Exception ex)
         {
+            await DisplayAlert(AppResources.Error,
+                              "Your device camera could not start. Please close and try again.",
+                              "OK");
             await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
             await CloseCameraCommon();
         }
@@ -74,17 +77,26 @@ public partial class LicensePlatePage : ContentPage
                 photoBytes = ms.ToArray();
             }
 
+            string[] textMessage = new string[2];
 
             if (BindingContext is LicensePlateViewModel vm)
-                await vm.ProcessCapturedImageAsync(photoBytes);
+               textMessage =  await vm.ProcessCapturedImageAsync(photoBytes);
 
             await creatingPopup.CloseAsync();
+            await Shell.Current.DisplayAlert(textMessage[0],
+                                             textMessage[1],
+                                             "OK");
 
         }
         catch (Exception ex)
         {
             await creatingPopup.CloseAsync();
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the LicensePlatePage class.");
+
+            await Shell.Current.DisplayAlert(AppResources.Error,
+                                             AppResources.AnErrorOccurredWhileSavingVehicles,
+                                             "OK");
+
 
         }
         finally

@@ -30,7 +30,7 @@
                     {
                         LicensePlate = vehicleDTO.LicensePlate!.ToUpper(),
                         AdditionalInfo = vehicleDTO.AdditionalInfo,
-                        DateOfInspection = DateTime.UtcNow,
+                        DateOfInspection = DateTime.Now,
                     };
 
                     isAdded = await vehicleRepo.AddAsync(vehicle);

@@ -25,11 +25,12 @@
             {
 
                 entities = await this.dbContext.Database
-                                        .Table<Person>()
-                                        .Where(p => p.FirstName.ToUpper().Contains(textInput) ||
-                                                    p.LastName.ToUpper().Contains(textInput) ||
-                                                    (p.AdditionInfo ?? "").ToUpper().Contains(textInput))
-                                        .ToListAsync();
+                                    .Table<Person>()
+                                    .Where(p => p.FirstName.Contains(textInput) ||
+                                                p.LastName.Contains(textInput) ||
+                                                (p.PersonalId != null && p.PersonalId.Contains(textInput)) ||
+                                                (p.AdditionInfo != null && p.AdditionInfo.Contains(textInput)))
+                                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -53,8 +54,8 @@
 
                 entities = await this.dbContext.Database
                                         .Table<Person>()
-                                        .Where(p => p.DateOfInspection >= pickedDate 
-                                            && p.DateOfInspection<nextDay)
+                                        .Where(p => p.DateOfInspection >= pickedDate
+                                            && p.DateOfInspection < nextDay)
                                         .ToListAsync();
             }
             catch (Exception ex)

@@ -36,10 +36,12 @@ public partial class MrzPersonPage : ContentPage
         }
         catch (Exception ex)
         {
+            await DisplayAlert(AppResources.Error,
+                              "Your device camera could not start. Please close and try again.",
+                              "OK");
             await Logger.LogAsync(ex, "Error in OnAppearing, in the MrzPersonPage class.");
             await CloseCameraCommon();
         }
-
     }
 
     private async void CloseCameraViewClicked(object sender, EventArgs e)
@@ -73,11 +75,15 @@ public partial class MrzPersonPage : ContentPage
                 photoBytes = ms.ToArray();
             }
 
-
+            string[] textMessage = new string[2];
             if (BindingContext is MrzPersonViewModel vm)
-                await vm.ProcessCapturedImageAsync(photoBytes);
+                textMessage = await vm.ProcessCapturedImageAsync(photoBytes);
+
 
             await creatingPopup.CloseAsync();
+            await DisplayAlert(textMessage[0],
+                               textMessage[1],
+                               "OK");
 
         }
         catch (Exception ex)
@@ -85,12 +91,15 @@ public partial class MrzPersonPage : ContentPage
             await creatingPopup.CloseAsync();
 
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the MrzPersonPage class.");
+            await DisplayAlert(AppResources.Error,
+                                   AppResources.AnErrorOccurredWhileSavingPerson,
+                                   "OK");
 
         }
         finally
         {
             //Do i need a creatingPopup.Close(); here? See other options for a if condition
-            CloseCameraCommon();
+            await CloseCameraCommon();
         }
     }
 

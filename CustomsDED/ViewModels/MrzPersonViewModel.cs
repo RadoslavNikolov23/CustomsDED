@@ -69,15 +69,19 @@
             this.personService = personService;
         }
 
-        public async Task ProcessCapturedImageAsync(byte[] photoBytes)
+        public async Task<string[]> ProcessCapturedImageAsync(byte[] photoBytes)
         {
+            string[] textMessage = new string[2];
+
             byte[]? croppedBytes = await CropToOverlayAsync(photoBytes);
 
             if (croppedBytes == null)
             {
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.ScanDocumentFailedPleaseTryAgain);
-                return;
+                // await ShowPopupMessage(AppResources.Error,
+                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
+                textMessage[0] = AppResources.Error;
+                textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+                return textMessage;
             }
 
             OcrResult result = await this.ocrService
@@ -85,9 +89,12 @@
 
             if (!result.Success)
             {
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.ScanDocumentFailedPleaseTryAgain);
-                return;
+                //await ShowPopupMessage(AppResources.Error,
+                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
+                textMessage[0] = AppResources.Error;
+                textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+
+                return textMessage;
             }
 
             try
@@ -102,13 +109,19 @@
 
                 if (infoPerson == null)
                 {
-                    await ShowPopupMessage(AppResources.Error,
-                                           AppResources.SomethingFailedPleaseTryAgain);
-                    return;
+                    //await ShowPopupMessage(AppResources.Error,
+                    //                       AppResources.SomethingFailedPleaseTryAgain);
+
+                    textMessage[0] = AppResources.Error;
+                    textMessage[1] = AppResources.SomethingFailedPleaseTryAgain;
+                    return textMessage;
                 }
 
-                await ShowPopupMessage(AppResources.Information,
-                                       AppResources.PictureTakenSeeResult);
+                // await ShowPopupMessage(AppResources.Information,
+                //                       AppResources.PictureTakenSeeResult);
+
+                textMessage[0] = AppResources.Information;
+                textMessage[1] = AppResources.PictureTakenSeeResult;
 
 
                 this.FirstNameEntry = infoPerson.FirstName;
@@ -127,8 +140,8 @@
                                                         $"{infoPerson.DateOfBirth:yyyy-MM-dd}" : "";
                 this.NationalityEntry = infoPerson.Nationality ?? "";
 
-                this.PersonalIdEntry = infoPerson.PersonalNumber ?? "";
-                this.SelectedSex = infoPerson.SexType ;
+                this.PersonalIdEntry = infoPerson.PersonalId ?? "";
+                this.SelectedSex = infoPerson.SexType;
 
                 this.DocumentTypeEntry = infoPerson.DocumentType ?? "";
                 this.DocumentNumberEntry = infoPerson.DocumentNumber ?? "";
@@ -138,12 +151,13 @@
 
                 this.AdditionInfoEntry = infoPerson.AdditionInfo ?? "";
 
+                return textMessage;
+
             }
             catch (Exception ex)
             {
                 await Logger.LogAsync(ex, "Error in ProcessCapturedImageAsync, in the MrzPersonViewModel class.");
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSavingPerson);
+                throw;
             }
         }
 
@@ -155,7 +169,7 @@
             DateTime? personDOB = MrzParserService.ParseDOBDate(this.DateOfBirthEntry);
             DateTime? personExpDate = MrzParserService.ParseExpirationDate(this.ExpirDateEntry);
 
-            if(String.IsNullOrEmpty(this.FirstNameEntry) || String.IsNullOrEmpty(this.LastNameEntry))
+            if (String.IsNullOrEmpty(this.FirstNameEntry) || String.IsNullOrEmpty(this.LastNameEntry))
             {
                 await ShowPopupMessage(AppResources.Error,
                                        AppResources.FirstAndLastNameAreRequired);

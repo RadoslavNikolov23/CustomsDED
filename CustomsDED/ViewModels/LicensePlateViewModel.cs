@@ -31,50 +31,74 @@
             this.vehicleService = vehicleService;
         }
 
-        public async Task ProcessCapturedImageAsync(byte[] photoBytes)
+        public async Task<string[]> ProcessCapturedImageAsync(byte[] photoBytes)
         {
-            byte[]? croppedBytes = await CropToOverlayAsync(photoBytes);
+            string[] textMessage = new string[2];
 
+            byte[]? croppedBytes = await CropToOverlayAsync(photoBytes);
+            
             if (croppedBytes == null)
             {
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.ScanDocumentFailedPleaseTryAgain);
-                return;
+                // await ShowPopupMessage(AppResources.Error,
+                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
+
+                textMessage[0] = AppResources.Error;
+                textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+                return textMessage;
             }
 
             OcrResult result = await this.ocrService.RecognizeTextAsync(croppedBytes, tryHard: true);
 
             if (!result.Success)
             {
-                await ShowPopupMessage(AppResources.Error,
-                                       AppResources.ScanDocumentFailedPleaseTryAgain);
-                return;
+                //await ShowPopupMessage(AppResources.Error,
+                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
+                textMessage[0] = AppResources.Error;
+                textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+                return textMessage;
             }
 
-            string? plate = await ExtractLicensePlate(result.AllText);
 
-            if (plate == null)
+            try
             {
-                if (result.AllText != null)
-                {
+                string? plate = await ExtractLicensePlate(result.AllText);
 
-                    await ShowPopupMessage(AppResources.Error,
-                                           AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
-                    this.PlateLicenseEntry = result.AllText;
+                if (plate == null)
+                {
+                    if (result.AllText != null)
+                    {
+
+                        //await ShowPopupMessage(AppResources.Error,
+                        //                      AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
+                        this.PlateLicenseEntry = result.AllText;
+                        textMessage[0] = AppResources.Error;
+                        textMessage[1] = AppResources.NoValidLicensePlateFoundTryAgainOrFixManual;
+                    }
+                    else
+                    {
+                        // await ShowPopupMessage(AppResources.Error,
+                        //                       AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain);
+                        textMessage[0] = AppResources.Error;
+                        textMessage[1] = AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain;
+                    }
+
                 }
                 else
                 {
-                    await ShowPopupMessage(AppResources.Error,
-                                           AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain);
+                    //await ShowPopupMessage(AppResources.Information,
+                    //                       AppResources.PictureTakenSeeResult);
+                    textMessage[0] = AppResources.Information;
+                    textMessage[1] = AppResources.PictureTakenSeeResult;
+
+                    this.PlateLicenseEntry = plate;
                 }
 
+                return textMessage;
             }
-            else
+            catch (Exception ex)
             {
-                await ShowPopupMessage(AppResources.Information,
-                                       AppResources.PictureTakenSeeResult);
-
-                this.PlateLicenseEntry = plate;
+                await Logger.LogAsync(ex, "Error in ProcessCapturedImageAsync, in the LicensePlateViewModel class.");
+                throw;
             }
         }
 
@@ -85,8 +109,8 @@
             {
                 if (string.IsNullOrEmpty(this.PlateLicenseEntry))
                 {
-                      await ShowPopupMessage(AppResources.Error,
-                                             AppResources.EnterVehicleLicensePlateFirst);
+                    await ShowPopupMessage(AppResources.Error,
+                                           AppResources.EnterVehicleLicensePlateFirst);
                     return;
                 }
 

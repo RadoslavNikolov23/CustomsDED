@@ -45,33 +45,37 @@
                                Padding="10"
                                Margin="5">
                             <VerticalStackLayout Spacing="10">
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.Name} "
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.Name} "
                                     FontSize="Small"/>
-                                    <Label Text="{Binding FirstName}" 
+                                        <Label Text="{Binding FirstName}" 
                                            TextColor="Black"
                                            FontAttributes="Bold"
                                            FontSize="Small"/>
-                                    <Label Text="{Binding LastName}" 
+                                        <Label Text="{Binding LastName}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
-
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.PersonalId} "
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.PersonalId} "
                                            FontSize="Small"/>
-                                    <Label Text="{Binding PersonalId}" 
+                                        <Label Text="{Binding PersonalId}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
-
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.DateOfCheck} "
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.DateOfCheck} "
                                            FontSize="Small"/>
-                                    <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
+                                        <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

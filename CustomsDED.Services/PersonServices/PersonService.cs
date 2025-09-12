@@ -35,14 +35,14 @@
                         LastName = personDTO.LastName!.ToUpper(),
                         DateOfBirth = personDTO.DateOfBirth,
                         Nationality = personDTO.Nationality == null ? null : personDTO.Nationality.ToUpper(),
-                        PersonalNumber = personDTO.PersonalId == null ? null : personDTO.PersonalId.ToUpper(),
+                        PersonalId = personDTO.PersonalId == null ? null : personDTO.PersonalId.ToUpper(),
                         SexType = personDTO.SexType,
                         DocumentNumber = personDTO.DocumentNumber == null ? null : personDTO.DocumentNumber.ToUpper(),
                         DocumentType = personDTO.DocumentType == null ? null : personDTO.DocumentType.ToUpper(),
                         ExpirationDate = personDTO.ExpirationDate,
                         IssuingCountry = personDTO.IssuingCountry == null ? null : personDTO.IssuingCountry.ToUpper(),
                         AdditionInfo = personDTO.AdditionInfo,
-                        DateOfInspection = DateTime.UtcNow,
+                        DateOfInspection = DateTime.Now,
                     };
 
                     isAdded = await personRepo.AddAsync(person);
@@ -76,7 +76,7 @@
                         MiddleName = person.MiddleName,
                         LastName = person.LastName,
                         DateOfBirth = person.DateOfBirth,
-                        PersonalId = person.PersonalNumber,
+                        PersonalId = person.PersonalId,
                         DateOfInspection = person.DateOfInspection,
 
                     });

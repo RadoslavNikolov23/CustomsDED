@@ -45,31 +45,34 @@
                                Padding="10"
                                Margin="5">
                             <VerticalStackLayout Spacing="10">
-
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.VehicleNumber}"
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.VehicleNumber}"
                                            FontSize="Small"/>
-                                    <Label Text="{Binding LicensePlate}" 
+                                        <Label Text="{Binding LicensePlate}" 
                                            TextColor="Black"
                                            FontAttributes="Bold"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
-
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.AdditionInfo}"
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.AdditionInfo}"
                                            FontSize="Small"/>
-                                    <Label Text="{Binding AdditionalInfo}" 
+                                        <Label Text="{Binding AdditionalInfo}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
-
-                                <HorizontalStackLayout Spacing="10">
-                                    <Label Text="{x:Static lang:AppResources.DateOfCheck} "
+                                    </HorizontalStackLayout>
+                                </ScrollView>
+                                <ScrollView Orientation="Horizontal">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label Text="{x:Static lang:AppResources.DateOfCheck} "
                                            FontSize="Small"/>
-                                    <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
+                                        <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
                                            TextColor="Black"
                                            FontSize="Small"/>
-                                </HorizontalStackLayout>
+                                    </HorizontalStackLayout>
+                                </ScrollView>
                             </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>

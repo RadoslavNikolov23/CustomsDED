@@ -26,7 +26,7 @@
                 entities = await this.dbContext.Database
                                         .Table<Vehicle>()
                                         .Where(v => v.LicensePlate.ToUpper().Contains(plateInput) ||
-                                                    (v.AdditionalInfo ?? "").ToUpper().Contains(plateInput))
+                                                    (v.AdditionalInfo != null && v.AdditionalInfo.Contains(plateInput)))
                                         .ToListAsync();
             }
             catch (Exception ex)
@@ -48,7 +48,6 @@
 
             try
             {
-
                 entities = await this.dbContext.Database
                                         .Table<Vehicle>()
                                         .Where(p => p.DateOfInspection >= pickedDate
