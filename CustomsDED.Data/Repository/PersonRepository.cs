@@ -19,18 +19,24 @@
         {
             await EnsureInitialized();
 
+            string textToSearch = textInput.ToUpper().Trim();
+
             IEnumerable<Person> entities = new List<Person>();
 
             try
             {
 
+                //entities = await this.dbContext.Database
+                //                    .Table<Person>()
+                //                    .Where(p => p.FirstName.Contains(textInput) ||
+                //                                p.LastName.Contains(textInput) ||
+                //                                (p.PersonalId != null && p.PersonalId.Contains(textInput)) ||
+                //                                (p.AdditionInfo != null && p.AdditionInfo.Contains(textInput)))
+                //                    .ToListAsync();
                 entities = await this.dbContext.Database
-                                    .Table<Person>()
-                                    .Where(p => p.FirstName.Contains(textInput) ||
-                                                p.LastName.Contains(textInput) ||
-                                                (p.PersonalId != null && p.PersonalId.Contains(textInput)) ||
-                                                (p.AdditionInfo != null && p.AdditionInfo.Contains(textInput)))
-                                    .ToListAsync();
+                                    .QueryAsync<Person>(
+        "SELECT * FROM Person WHERE FirstName LIKE ? OR LastName LIKE ? OR PersonalId LIKE ? OR AdditionInfo LIKE ?",$"%{textToSearch}%", $"%{textToSearch}%", $"%{textToSearch}%", $"%{textToSearch}%");
+
             }
             catch (Exception ex)
             {

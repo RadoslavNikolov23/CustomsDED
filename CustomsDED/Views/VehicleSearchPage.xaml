@@ -16,68 +16,79 @@
                      Priority="0" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="10">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20"
+                                 Spacing="10">
 
-            <Frame
-                    BackgroundColor="White"
-                    BorderColor="Gray"
-                    CornerRadius="12"
-                    Padding="10">
-                <VerticalStackLayout Spacing="10">
+                <Frame BackgroundColor="White"
+                       BorderColor="Gray"
+                       CornerRadius="12"
+                       Padding="10">
+                    <VerticalStackLayout Spacing="10">
 
-                    <Label Text="{x:Static lang:AppResources.EnterVehicleLicensePlate}"
-                           FontSize="Small"/>
+                        <Label Text="{x:Static lang:AppResources.EnterVehicleLicensePlate}"
+                               FontSize="Small"/>
 
-                    <Entry Placeholder="{x:Static lang:AppResources.EnterLicensePlateInfo}"
-                           Text="{Binding EnterLicensePlateEntry, Mode=TwoWay}"/>
-                    <Button Text="{x:Static lang:AppResources.Search}"
-                            Command="{Binding SearchVehicleCommand}"
-                            BackgroundColor="SteelBlue"/>
-                </VerticalStackLayout>
-            </Frame>
+                        <Entry Placeholder="{x:Static lang:AppResources.EnterLicensePlateInfo}"
+                               Text="{Binding EnterLicensePlateEntry, Mode=TwoWay}"/>
+                        <Button Text="{x:Static lang:AppResources.Search}"
+                                Command="{Binding SearchVehicleCommand}"
+                                BackgroundColor="SteelBlue"/>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <CollectionView ItemsSource="{Binding VehiclesResultList}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:VehicleGetPlateDTO">
-                        <Frame BorderColor="Gray"
-                               Padding="10"
-                               Margin="5">
-                            <VerticalStackLayout Spacing="10">
-                                <ScrollView Orientation="Horizontal">
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{x:Static lang:AppResources.VehicleNumber}"
-                                           FontSize="Small"/>
-                                        <Label Text="{Binding LicensePlate}" 
-                                           TextColor="Black"
-                                           FontAttributes="Bold"
-                                           FontSize="Small"/>
-                                    </HorizontalStackLayout>
-                                </ScrollView>
-                                <ScrollView Orientation="Horizontal">
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{x:Static lang:AppResources.AdditionInfo}"
-                                           FontSize="Small"/>
-                                        <Label Text="{Binding AdditionalInfo}" 
-                                           TextColor="Black"
-                                           FontSize="Small"/>
-                                    </HorizontalStackLayout>
-                                </ScrollView>
-                                <ScrollView Orientation="Horizontal">
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label Text="{x:Static lang:AppResources.DateOfCheck} "
-                                           FontSize="Small"/>
-                                        <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
-                                           TextColor="Black"
-                                           FontSize="Small"/>
-                                    </HorizontalStackLayout>
-                                </ScrollView>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
-    </ScrollView>
+                <CollectionView ItemsSource="{Binding VehiclesResultList}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:VehicleGetPlateDTO">
+                            <Frame BorderColor="Gray"
+                                   Padding="10"
+                                   Margin="5">
+                                <VerticalStackLayout Spacing="10">
+                                    <ScrollView Orientation="Horizontal">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{x:Static lang:AppResources.VehicleNumber}"
+                                                   FontSize="Small"/>
+                                            <Label Text="{Binding LicensePlate}" 
+                                                   TextColor="Black"
+                                                   FontAttributes="Bold"
+                                                   FontSize="Small"/>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
+                                    <ScrollView Orientation="Horizontal">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{x:Static lang:AppResources.AdditionInfo}"
+                                                   FontSize="Small"/>
+                                            <Label Text="{Binding AdditionalInfo}" 
+                                                   TextColor="Black"
+                                                   FontSize="Small"/>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
+                                    <ScrollView Orientation="Horizontal">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label Text="{x:Static lang:AppResources.DateOfCheck} "
+                                                   FontSize="Small"/>
+                                            <Label Text="{Binding DateOfInspection, StringFormat='{0:G}', TargetNullValue='N/A'}" 
+                                                   TextColor="Black"
+                                                   FontSize="Small"/>
+                                        </HorizontalStackLayout>
+                                    </ScrollView>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="End"
+                 HorizontalOptions="FillAndExpand"/>
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="Start"
+                 HorizontalOptions="FillAndExpand"/>
+
+    </Grid>
 </ContentPage>

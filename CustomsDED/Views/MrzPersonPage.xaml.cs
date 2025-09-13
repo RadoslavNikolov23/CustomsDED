@@ -37,8 +37,8 @@ public partial class MrzPersonPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert(AppResources.Error,
-                              "Your device camera could not start. Please close and try again.",
-                              "OK");
+                               AppResources.YourDeviceCameraCouldNotStartPleasecloseTryagain,
+                               "OK");
             await Logger.LogAsync(ex, "Error in OnAppearing, in the MrzPersonPage class.");
             await CloseCameraCommon();
         }
@@ -51,8 +51,10 @@ public partial class MrzPersonPage : ContentPage
 
     private async void TakeMRZPictureClicked(object sender, EventArgs e)
     {
-        CreatingPopup creatingPopup = new CreatingPopup();
-        Shell.Current.ShowPopup(creatingPopup);
+        //CreatingPopup creatingPopup = new CreatingPopup();
+        //Shell.Current.ShowPopup(creatingPopup);
+        this.OverlayLabel.Text = AppResources.Processing;
+        this.OverlayGrid.IsVisible = true;
 
         try
         {
@@ -61,7 +63,8 @@ public partial class MrzPersonPage : ContentPage
 
             if (stream == null)
             {
-                await creatingPopup.CloseAsync();
+                //await creatingPopup.CloseAsync();
+                this.OverlayGrid.IsVisible = false;
                 await DisplayAlert(AppResources.Error,
                                    AppResources.CameraCaptureCanceled,
                                    "OK");
@@ -80,7 +83,9 @@ public partial class MrzPersonPage : ContentPage
                 textMessage = await vm.ProcessCapturedImageAsync(photoBytes);
 
 
-            await creatingPopup.CloseAsync();
+            //await creatingPopup.CloseAsync();
+            this.OverlayGrid.IsVisible = false;
+
             await DisplayAlert(textMessage[0],
                                textMessage[1],
                                "OK");
@@ -88,12 +93,13 @@ public partial class MrzPersonPage : ContentPage
         }
         catch (Exception ex)
         {
-            await creatingPopup.CloseAsync();
+            //await creatingPopup.CloseAsync();
+            this.OverlayGrid.IsVisible = false;
 
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the MrzPersonPage class.");
             await DisplayAlert(AppResources.Error,
-                                   AppResources.AnErrorOccurredWhileSavingPerson,
-                                   "OK");
+                               AppResources.AnErrorOccurredWhileTakingPicture,
+                               "OK");
 
         }
         finally

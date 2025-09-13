@@ -9,7 +9,7 @@
              x:DataType="viewmodels:LicensePlateViewModel"
              Title="{x:Static lang:AppResources.VehicleSave}"
              BackgroundColor="White">
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="iconemail.png"
                      Command="{Binding ReportAProblemCommand}"
@@ -17,99 +17,133 @@
                      Priority="0" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="15">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20"
+                                 Spacing="15">
 
-            <!-- Camera View -->
-            <Grid x:Name = "CameraViewGrid"
-                  IsVisible = "false">
+                <Grid x:Name="MainContentGrid">
 
-                <toolkit:CameraView  x:Name="CameraView"
-                                     WidthRequest="350"
-                                     HeightRequest="450"/>
+                    <!-- Camera View -->
+                    <Grid x:Name = "CameraViewGrid"
+                          IsVisible = "false">
 
-                <Frame WidthRequest="300"
-                       HeightRequest="80"
-                       BorderColor="Red"
-                       BackgroundColor="#33FFFFFF"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       HasShadow="False"/>
+                        <toolkit:CameraView  x:Name="CameraView"
+                                             WidthRequest="350"
+                                             HeightRequest="450"/>
 
-                <!-- Guide Frame with Text -->
-                <Frame Padding="5"
-                       CornerRadius="8"
-                       BackgroundColor="#66000000"
-                       BorderColor="Goldenrod"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Start"
-                       Margin="10"
-                       HasShadow="False"
-                       IsVisible="True">
-                    <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
-                           TextColor="White"
-                           FontSize="Micro"
-                           FontAttributes="Italic"/>
-                </Frame>
-            </Grid>
+                        <Frame WidthRequest="300"
+                               HeightRequest="80"
+                               BorderColor="Red"
+                               BackgroundColor="#33FFFFFF"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               HasShadow="False"/>
 
-
-            <HorizontalStackLayout x:Name = "CameraViewButtos"
-                                   Spacing="10"
-                                   IsVisible="false">
-
-                <Button Text="{x:Static lang:AppResources.TakePicture}"
-                        Clicked="TakePlatePictureClicked"
-                        BackgroundColor="SteelBlue"
-                        WidthRequest="160"
-                        HeightRequest="50"/>
-
-                <Button Text="{x:Static lang:AppResources.CloseCamera}"
-                        Clicked="CloseCameraViewClicked"
-                        BackgroundColor="SteelBlue"
-                        WidthRequest="160"
-                        HeightRequest="50"/>
-
-            </HorizontalStackLayout>
-
-            <Frame
-                   BackgroundColor="White"
-                   BorderColor="Gray"
-                   CornerRadius="12"
-                   Padding="10">
-
-                <!-- Manual entry fields -->
-                <VerticalStackLayout>
-                    <Label Text="{x:Static lang:AppResources.VehicleNumber} "
-                           FontSize="Small"/>
-                    <Entry Placeholder="{x:Static lang:AppResources.LicensePlate}"
-                           Text="{Binding PlateLicenseEntry, Mode=TwoWay}"/>
-
-                    <Label Text="{x:Static lang:AppResources.AdditionInfo} "
-                           FontSize="Small"/>
-                    <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
-                           Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
-                </VerticalStackLayout>
-
-            </Frame>
+                        <!-- Guide Frame with Text -->
+                        <Frame Padding="5"
+                               CornerRadius="8"
+                               BackgroundColor="#66000000"
+                               BorderColor="Goldenrod"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Start"
+                               Margin="10"
+                               HasShadow="False"
+                               IsVisible="True">
+                            <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
+                                   TextColor="White"
+                                   FontSize="Micro"
+                                   FontAttributes="Italic"/>
+                        </Frame>
+                        <!-- Overlay grid on top -->
+                        <Grid x:Name="OverlayGrid"
+                              BackgroundColor="#88000000"
+                              IsVisible="False">
+                            <Frame Padding="20"
+                                   CornerRadius="10"
+                                   BackgroundColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   WidthRequest="300"
+                                   HeightRequest="150">
+                                <Label x:Name="OverlayLabel"
+                                       Text="Processing..."
+                                       FontSize="Small"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       FontAttributes="Bold"/>
+                            </Frame>
+                        </Grid>
+                    </Grid>
+                </Grid>
 
 
-            <!-- Buttons -->
-            <Button Text="{x:Static lang:AppResources.OpenCamera}"
-                    Clicked="OpenCameraViewClicked"                    
-                    BackgroundColor="SteelBlue"
-                    WidthRequest="330"
-                    HeightRequest="50"/>
+                <HorizontalStackLayout x:Name = "CameraViewButtos"
+                                       Spacing="10"
+                                       IsVisible="false">
+
+                        <Button Text="{x:Static lang:AppResources.TakePicture}"
+                                Clicked="TakePlatePictureClicked"
+                                BackgroundColor="SteelBlue"
+                                WidthRequest="160"
+                                HeightRequest="50"/>
+
+                        <Button Text="{x:Static lang:AppResources.CloseCamera}"
+                                Clicked="CloseCameraViewClicked"
+                                BackgroundColor="SteelBlue"
+                                WidthRequest="160"
+                                HeightRequest="50"/>
+
+                    </HorizontalStackLayout>
+
+                    <Frame
+                            BackgroundColor="White"
+                            BorderColor="Gray"
+                            CornerRadius="12"
+                            Padding="10">
+
+                        <!-- Manual entry fields -->
+                        <VerticalStackLayout>
+                            <Label Text="{x:Static lang:AppResources.VehicleNumber} "
+                                   FontSize="Small"/>
+                            <Entry Placeholder="{x:Static lang:AppResources.LicensePlate}"
+                                   Text="{Binding PlateLicenseEntry, Mode=TwoWay}"/>
+
+                            <Label Text="{x:Static lang:AppResources.AdditionInfo} "
+                                   FontSize="Small"/>
+                            <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
+                                   Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
+                        </VerticalStackLayout>
+
+                    </Frame>
 
 
-            <Button Text="{x:Static lang:AppResources.SaveVehicle}"
-                    Command="{Binding SaveVehicleCommand}"
-                    BackgroundColor="SteelBlue"
-                    WidthRequest="330"
-                    HeightRequest="50"/>
+                    <!-- Buttons -->
+                    <Button Text="{x:Static lang:AppResources.OpenCamera}"
+                            Clicked="OpenCameraViewClicked"                    
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="330"
+                            HeightRequest="50"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
-    
+
+                    <Button Text="{x:Static lang:AppResources.SaveVehicle}"
+                            Command="{Binding SaveVehicleCommand}"
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="330"
+                            HeightRequest="50"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="End"
+                 HorizontalOptions="FillAndExpand"/>
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="Start"
+                 HorizontalOptions="FillAndExpand"/>
+
+    </Grid>
+
 </ContentPage>

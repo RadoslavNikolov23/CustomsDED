@@ -1,13 +1,13 @@
 ﻿namespace CustomsDED.Data.Repository
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
     using CustomsDED.Common.Helpers;
     using CustomsDED.Data.Connection;
     using CustomsDED.Data.Models;
     using CustomsDED.Data.Repository.Contracts;
+    using Microsoft.Maui;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class VehicleRepository : BaseAsyncRepository<Vehicle>, IVehicleRepository
     {
@@ -19,15 +19,21 @@
         {
             await EnsureInitialized();
 
+            string textToSearch = plateInput.ToUpper().Trim();
+
             IEnumerable<Vehicle> entities = new List<Vehicle>();
 
             try
             {
+                //entities = await this.dbContext.Database
+                //.Table<Vehicle>()
+                //.Where(v => v.LicensePlate.ToUpper().Contains(plateInput) ||
+                //            (v.AdditionalInfo != null && v.AdditionalInfo.Contains(plateInput)))
+                //.ToListAsync();
+
                 entities = await this.dbContext.Database
-                                        .Table<Vehicle>()
-                                        .Where(v => v.LicensePlate.ToUpper().Contains(plateInput) ||
-                                                    (v.AdditionalInfo != null && v.AdditionalInfo.Contains(plateInput)))
-                                        .ToListAsync();
+                               .QueryAsync<Vehicle>(
+   "SELECT * FROM Vehicle WHERE LicensePlate LIKE ? OR AdditionalInfo LIKE ?", $"%{textToSearch}%", $"%{textToSearch}%");
             }
             catch (Exception ex)
             {

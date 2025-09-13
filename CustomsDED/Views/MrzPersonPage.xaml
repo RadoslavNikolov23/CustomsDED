@@ -17,151 +17,184 @@
                      Priority="0" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="15">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="20"
+                                 Spacing="15">
 
+                <Grid x:Name="MainContentGrid">
+                    <Grid x:Name = "CameraViewGrid"
+                          IsVisible = "false">
 
-            <Grid x:Name = "CameraViewGrid"
-                  IsVisible = "false">
+                        <toolkit:CameraView x:Name="CameraView"
+                                            WidthRequest="350"
+                                            HeightRequest="450"/>
 
-                <toolkit:CameraView x:Name="CameraView"
-                                    WidthRequest="350"
-                                    HeightRequest="450"/>
+                        <Frame WidthRequest="300"
+                               HeightRequest="80"
+                               BorderColor="Red"
+                               BackgroundColor="#33FFFFFF"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               HasShadow="False"/>
 
-                <Frame WidthRequest="300"
-                       HeightRequest="80"
-                       BorderColor="Red"
-                       BackgroundColor="#33FFFFFF"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       HasShadow="False"/>
+                        <!-- Guide Frame with Text -->
+                        <Frame Padding="5"
+                               CornerRadius="8"
+                               BackgroundColor="#66000000"
+                               BorderColor="Goldenrod"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Start"
+                               Margin="10"
+                               HasShadow="False"
+                               IsVisible="True">
+                            <Label Text="{x:Static lang:AppResources.StartFromTopCenterBorder}"
+                                   TextColor="White"
+                                   FontSize="Micro"
+                                   FontAttributes="Italic"/>
+                        </Frame>
+                    </Grid>
 
-                <!-- Guide Frame with Text -->
-                <Frame Padding="5"
-                       CornerRadius="8"
-                       BackgroundColor="#66000000"
-                       BorderColor="Goldenrod"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Start"
-                       Margin="10"
-                       HasShadow="False"
-                       IsVisible="True">
-                    <Label Text="{x:Static lang:AppResources.StartFromTopCenterBorder}"
-                           TextColor="White"
-                           FontSize="Micro"
-                           FontAttributes="Italic"/>
-                </Frame>
-            </Grid>
+                    <!-- Overlay grid on top -->
+                    <Grid x:Name="OverlayGrid"
+                          BackgroundColor="#88000000"
+                          IsVisible="False">
+                        <Frame Padding="20"
+                               CornerRadius="10"
+                               BackgroundColor="White"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="300"
+                               HeightRequest="150">
+                            <Label x:Name="OverlayLabel"
+                                   Text="Processing..."
+                                   FontSize="Small"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontAttributes="Bold"/>
+                        </Frame>
+                    </Grid>
+                </Grid>
 
-            <HorizontalStackLayout x:Name = "CameraViewButtos"
-                                   Spacing="10"
-                                   IsVisible="false">
+                <HorizontalStackLayout x:Name = "CameraViewButtos"
+                                       Spacing="10"
+                                       IsVisible="false">
 
-                <Button Text="{x:Static lang:AppResources.TakePicture}"
-                        Clicked="TakeMRZPictureClicked"
-                        BackgroundColor="SteelBlue"
-                        WidthRequest="160"
-                        HeightRequest="50"/>
+                    <Button Text="{x:Static lang:AppResources.TakePicture}"
+                            Clicked="TakeMRZPictureClicked"
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="160"
+                            HeightRequest="50"/>
 
-                <Button Text="{x:Static lang:AppResources.CloseCamera}"
-                        Clicked="CloseCameraViewClicked"
-                        BackgroundColor="SteelBlue"
-                        WidthRequest="160"
-                        HeightRequest="50"/>
+                    <Button Text="{x:Static lang:AppResources.CloseCamera}"
+                            Clicked="CloseCameraViewClicked"
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="160"
+                            HeightRequest="50"/>
 
-            </HorizontalStackLayout>
+                </HorizontalStackLayout>
 
-            <Frame
-                 BackgroundColor="White"
-                 BorderColor="Gray"
-                 CornerRadius="12"
-                 Padding="10">
-                <VerticalStackLayout>
+                <Frame
+                        BackgroundColor="White"
+                        BorderColor="Gray"
+                        CornerRadius="12"
+                        Padding="10">
+                    <VerticalStackLayout>
 
-                    <!--Person Name and Details-->
-                    <Label Text="{x:Static lang:AppResources.PersonName} "
-                           FontSize="Small"/>
+                        <!--Person Name and Details-->
+                        <Label Text="{x:Static lang:AppResources.PersonName} "
+                               FontSize="Small"/>
 
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.FirstName}"
-                               Text="{Binding FirstNameEntry, Mode=TwoWay}"/>
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.FirstName}"
+                                   Text="{Binding FirstNameEntry, Mode=TwoWay}"/>
 
-                        <Entry Placeholder="{x:Static lang:AppResources.MiddleName}"
-                               Text="{Binding MiddleNameEntry, Mode=TwoWay}"
-                               IsVisible="{Binding IsMiddleNameVisibleEntry}"/>
+                            <Entry Placeholder="{x:Static lang:AppResources.MiddleName}"
+                                   Text="{Binding MiddleNameEntry, Mode=TwoWay}"
+                                   IsVisible="{Binding IsMiddleNameVisibleEntry}"/>
 
-                        <Entry Placeholder="{x:Static lang:AppResources.LastName}"
-                               Text="{Binding LastNameEntry, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.LastName}"
+                                   Text="{Binding LastNameEntry, Mode=TwoWay}"/>
+                        </HorizontalStackLayout>
 
-                    <!--Person Date of Birth and Nationality-->
-                    <Label Text="{x:Static lang:AppResources.PersonDateBirthAndNationality} "
-                           FontSize="Small"/>
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.DateOfBirth}"
-                               Text="{Binding DateOfBirthEntry, Mode=TwoWay}"/>
+                        <!--Person Date of Birth and Nationality-->
+                        <Label Text="{x:Static lang:AppResources.PersonDateBirthAndNationality} "
+                               FontSize="Small"/>
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.DateOfBirth}"
+                                   Text="{Binding DateOfBirthEntry, Mode=TwoWay}"/>
 
-                        <Entry Placeholder="{x:Static lang:AppResources.Nationality}"
-                               Text="{Binding NationalityEntry, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.Nationality}"
+                                   Text="{Binding NationalityEntry, Mode=TwoWay}"/>
+                        </HorizontalStackLayout>
 
-                    <!--Person ID and Sex-->
-                    <Label Text="{x:Static lang:AppResources.PersonIdAndSex} "
-                           FontSize="Small"/>
+                        <!--Person ID and Sex-->
+                        <Label Text="{x:Static lang:AppResources.PersonIdAndSex} "
+                               FontSize="Small"/>
 
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.PersonalId}"
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.PersonalId}"
                                Text="{Binding PersonalIdEntry, Mode=TwoWay}"/>
 
-                        <Picker Title="{x:Static lang:AppResources.Sex}"
+                            <Picker Title="{x:Static lang:AppResources.Sex}"
                                 ItemsSource="{Binding SexOptions}"
                                 SelectedItem="{Binding SelectedSex, Mode=TwoWay}"/>
 
-                    </HorizontalStackLayout>
+                        </HorizontalStackLayout>
 
-                    <!--Person Document Type, Expiration Date, Issuing country-->
-                    <Label Text="{x:Static lang:AppResources.DocumentInformation} "
-                           FontSize="Small"/>
+                        <!--Person Document Type, Expiration Date, Issuing country-->
+                        <Label Text="{x:Static lang:AppResources.DocumentInformation} "
+                               FontSize="Small"/>
 
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.DocumentType}"
-                               Text="{Binding DocumentTypeEntry, Mode=TwoWay}"/>
-                        <Entry Placeholder="{x:Static lang:AppResources.DocumentNumber}"
-                               Text="{Binding DocumentNumberEntry, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.ExpirationDate}"
-                               Text="{Binding ExpirDateEntry, Mode=TwoWay}"/>
-                        <Entry Placeholder="{x:Static lang:AppResources.IssuingCountry}"
-                               Text="{Binding IssuingCountryEntry, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.DocumentType}"
+                                   Text="{Binding DocumentTypeEntry, Mode=TwoWay}"/>
+                            <Entry Placeholder="{x:Static lang:AppResources.DocumentNumber}"
+                                   Text="{Binding DocumentNumberEntry, Mode=TwoWay}"/>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.ExpirationDate}"
+                                   Text="{Binding ExpirDateEntry, Mode=TwoWay}"/>
+                            <Entry Placeholder="{x:Static lang:AppResources.IssuingCountry}"
+                                   Text="{Binding IssuingCountryEntry, Mode=TwoWay}"/>
+                        </HorizontalStackLayout>
 
-                    <!--Person Addition information-->
-                    <Label Text="{x:Static lang:AppResources.AdditionInfo}"
-                           FontSize="Small"/>
+                        <!--Person Addition information-->
+                        <Label Text="{x:Static lang:AppResources.AdditionInfo}"
+                               FontSize="Small"/>
 
-                    <HorizontalStackLayout>
-                        <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
-                               Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout>
+                            <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
+                                   Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
+                        </HorizontalStackLayout>
 
-                </VerticalStackLayout>
-            </Frame>
+                    </VerticalStackLayout>
+                </Frame>
 
-            <!-- Buttons -->
-            <Button Text="{x:Static lang:AppResources.OpenCamera}"
-                    Clicked="OpenCameraViewClicked"
-                    BackgroundColor="SteelBlue"
-                    WidthRequest="330"
-                    HeightRequest="50"/>
+                <!-- Buttons -->
+                <Button Text="{x:Static lang:AppResources.OpenCamera}"
+                        Clicked="OpenCameraViewClicked"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="330"
+                        HeightRequest="50"/>
 
-            <Button Text="{x:Static lang:AppResources.SavePerson}"
-                    Command="{Binding SavePersonCommand}"
-                    BackgroundColor="SteelBlue"
-                    WidthRequest="330"
-                    HeightRequest="50"/>
+                <Button Text="{x:Static lang:AppResources.SavePerson}"
+                        Command="{Binding SavePersonCommand}"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="330"
+                        HeightRequest="50"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="End"
+                 HorizontalOptions="FillAndExpand"/>
+        <BoxView HeightRequest="2"
+                 BackgroundColor="Black"
+                 VerticalOptions="Start"
+                 HorizontalOptions="FillAndExpand"/>
+
+    </Grid>
 </ContentPage>

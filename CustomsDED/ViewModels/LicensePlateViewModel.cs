@@ -154,24 +154,56 @@
         {
             await Task.Yield();
 
-            // Strip everything except A–Z and 0–9
-            string cleanText = Regex.Replace(ocrText.ToUpper(), @"[^A-Z0-9]", "");
+            if (string.IsNullOrWhiteSpace(ocrText))
+                return null;
 
-            // Remove country prefix if present
-            cleanText = Regex.Replace(cleanText, @"^(BG|RO|TR)", "");
+            // 1. Normalize case and whitespace across multi-lines
+            string normalized = Regex.Replace(ocrText.ToUpper(), @"\s+", " ").Trim();
 
-            // Candidates = continuous alphanumeric strings
-            List<string> candidates = Regex.Matches(cleanText, @"[A-Z0-9]+")
-                                           .Select(m => m.Value)
-                                           .ToList();
+            // 2. Split into tokens
+            var tokens = normalized.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            foreach (var candidate in candidates)
+            // Optional: remove obvious noise words (brands, generic words)
+            string[] stopWords = { "SERVICE", "TOYOTA", "FORD", "CITY", "RUSE" };
+            tokens.RemoveAll(t => stopWords.Contains(t));
+
+            // 3. Clean tokens by removing prefixes
+            for (int i = 0; i < tokens.Count; i++)
             {
+                // Remove BG/RO/TR if separate
+                if (tokens[i] == "BG" || tokens[i] == "RO" || tokens[i] == "TR")
+                {
+                    tokens[i] = string.Empty;
+                    continue;
+                }
+
+                // Remove BG/RO/TR if glued at start
+                tokens[i] = Regex.Replace(tokens[i], @"^(BG|RO|TR)", "");
+            }
+
+            // Remove blanks after cleaning
+            tokens = tokens.Where(t => !string.IsNullOrEmpty(t)).ToList();
+
+            // 4. First pass: test each token individually
+            foreach (var token in tokens)
+            {
+                if (BulgarianRegex.IsMatch(token)) return token;
+                if (RomanianRegex.IsMatch(token)) return token;
+                if (TurkishRegex.IsMatch(token)) return token;
+            }
+
+            // 5. Second pass: test concatenated text (for glued formats like "BGA0101AA")
+            string glued = string.Join("", tokens);
+            var matches = Regex.Matches(glued, @"[A-Z0-9]{5,10}"); // typical plate length
+            foreach (Match m in matches)
+            {
+                var candidate = m.Value;
                 if (BulgarianRegex.IsMatch(candidate)) return candidate;
                 if (RomanianRegex.IsMatch(candidate)) return candidate;
                 if (TurkishRegex.IsMatch(candidate)) return candidate;
             }
 
+            // 6. Nothing found
             return null;
         }
 

@@ -8,6 +8,12 @@
         public string? personalId;
 
         [ObservableProperty]
+        public string? nationality;
+
+        [ObservableProperty] 
+        public string? additionInfo;
+
+        [ObservableProperty]
         public DateTime? dateOfInspection;
     }
 }

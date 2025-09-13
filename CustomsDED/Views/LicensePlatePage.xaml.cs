@@ -38,8 +38,8 @@ public partial class LicensePlatePage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert(AppResources.Error,
-                              "Your device camera could not start. Please close and try again.",
-                              "OK");
+                               AppResources.YourDeviceCameraCouldNotStartPleasecloseTryagain,
+                               "OK");
             await Logger.LogAsync(ex, "Error in OnAppearing, in the LicensePlatePage class.");
             await CloseCameraCommon();
         }
@@ -52,8 +52,10 @@ public partial class LicensePlatePage : ContentPage
 
     private async void TakePlatePictureClicked(object sender, EventArgs e)
     {
-        CreatingPopup creatingPopup = new CreatingPopup();
-        Shell.Current.ShowPopup(creatingPopup);
+        //CreatingPopup creatingPopup = new CreatingPopup();
+        //Shell.Current.ShowPopup(creatingPopup);
+        this.OverlayLabel.Text = AppResources.Processing;
+        this.OverlayGrid.IsVisible = true;
 
         try
         {
@@ -63,7 +65,8 @@ public partial class LicensePlatePage : ContentPage
 
             if (stream == null)
             {
-                await creatingPopup.CloseAsync();
+                //await creatingPopup.CloseAsync();
+                this.OverlayGrid.IsVisible = false;
                 await DisplayAlert(AppResources.Error,
                                    AppResources.CameraCaptureCanceled,
                                    "OK");
@@ -82,7 +85,8 @@ public partial class LicensePlatePage : ContentPage
             if (BindingContext is LicensePlateViewModel vm)
                textMessage =  await vm.ProcessCapturedImageAsync(photoBytes);
 
-            await creatingPopup.CloseAsync();
+            //await creatingPopup.CloseAsync();
+            this.OverlayGrid.IsVisible = false;
             await Shell.Current.DisplayAlert(textMessage[0],
                                              textMessage[1],
                                              "OK");
@@ -90,11 +94,12 @@ public partial class LicensePlatePage : ContentPage
         }
         catch (Exception ex)
         {
-            await creatingPopup.CloseAsync();
+            //await creatingPopup.CloseAsync();
+            this.OverlayGrid.IsVisible = false;
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the LicensePlatePage class.");
 
             await Shell.Current.DisplayAlert(AppResources.Error,
-                                             AppResources.AnErrorOccurredWhileSavingVehicles,
+                                             AppResources.AnErrorOccurredWhileTakingPicture,
                                              "OK");
 
 

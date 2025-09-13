@@ -10,6 +10,7 @@
        Shell.TabBarUnselectedColor="Black"
        Shell.TabBarTitleColor="AntiqueWhite">
 
+    
     <TabBar>
         <ShellContent Icon="vehichlesave.png"
                       ContentTemplate="{DataTemplate views:LicensePlatePage}" />

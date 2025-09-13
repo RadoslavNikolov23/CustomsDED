@@ -29,6 +29,12 @@
         private bool isEmptyPersonListVisible = false;
 
         [ObservableProperty]
+        private bool dateVehicleResultFrame = false;
+
+        [ObservableProperty]
+        private bool datePersonResultFrame = false;
+
+        [ObservableProperty]
         private ObservableCollection<PersonGetDateDTO> datePersonResultList = new();
 
         [ObservableProperty]
@@ -59,6 +65,8 @@
                 {
                     this.DateVehiclesResultList.Clear();
                     this.IsEmptyVehicleListVisible = false;
+                    this.DateVehicleResultFrame = true;
+
 
                     foreach (VehicleGetDateDTO vehicle in vehicleList)
                     {
@@ -68,9 +76,11 @@
                 else
                 {
                     this.DateVehiclesResultList.Clear();
-                    string isEmptyVehicleList = String.Format(AppResources.NoVehiclesFoundForDate,  
+                    this.IsEmptyVehicleList = String.Format(AppResources.NoVehiclesFoundForDate,  
                                                               datePicked.ToString("dd/MM/yyyy"));
                     this.IsEmptyVehicleListVisible = true;
+                    this.DateVehicleResultFrame = false;
+
                 }
 
                 ICollection<PersonGetDateDTO> personList = await this.personService
@@ -79,8 +89,8 @@
                 if (personList != null && personList.Count > 0)
                 {
                     this.DatePersonResultList.Clear();
-                    this.IsEmptyVehicleListVisible = false;
-
+                    this.IsEmptyPersonListVisible = false;
+                    this.DatePersonResultFrame = true;
 
                     foreach (PersonGetDateDTO person in personList)
                     {
@@ -91,12 +101,12 @@
                 {
                     this.DatePersonResultList.Clear();
 
-                    string isEmptyVehicleList = String.Format(AppResources.NoPersonsFoundForDate,
+                    this.IsEmptyPersonList = String.Format(AppResources.NoPersonsFoundForDate,
                                                               datePicked.ToString("dd/MM/yyyy"));
-                    this.IsEmptyVehicleListVisible = true;
+                    this.IsEmptyPersonListVisible = true;
+                    this.DatePersonResultFrame = false;
+
                 }
-
-
             }
             catch (Exception ex)
             {

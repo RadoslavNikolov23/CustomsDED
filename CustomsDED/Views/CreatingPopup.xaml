@@ -6,7 +6,7 @@
              x:Class="CustomsDED.Views.CreatingPopup"
              CanBeDismissedByTappingOutsideOfPopup="false"
              BackgroundColor="White">
-    
+
     <Grid Padding="10"
           BackgroundColor="#DD333333"
           HorizontalOptions="Center"

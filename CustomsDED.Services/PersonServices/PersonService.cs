@@ -78,7 +78,8 @@
                         DateOfBirth = person.DateOfBirth,
                         PersonalId = person.PersonalId,
                         DateOfInspection = person.DateOfInspection,
-
+                        Nationality = person.Nationality,
+                        AdditionInfo = person.AdditionInfo,
                     });
                 }
 

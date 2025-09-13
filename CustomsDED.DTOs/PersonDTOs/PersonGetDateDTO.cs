@@ -6,5 +6,6 @@
     {
         [ObservableProperty]
         public DateTime? dateOfInspection;
+
     }
 }
