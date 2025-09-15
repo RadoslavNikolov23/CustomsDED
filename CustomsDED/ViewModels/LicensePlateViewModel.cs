@@ -114,7 +114,8 @@
                     return;
                 }
 
-                string cleanedPlate = Regex.Replace(this.PlateLicenseEntry.ToUpper(), @"[^A-Z0-9]", "");
+                //string cleanedPlate = Regex.Replace(this.PlateLicenseEntry.ToUpper(), @"[^A-Z0-9]", "");
+                string cleanedPlate = FilterInput(this.PlateLicenseEntry);
 
                 bool isSaved = await this.vehicleService
                                                 .AddVehicleAsync(new VehicleAddDTO

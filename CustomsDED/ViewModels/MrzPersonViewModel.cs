@@ -178,15 +178,22 @@
 
             try
             {
+
+                string firstNameCleaned= FilterInput(this.FirstNameEntry);
+                string? middleNameCleaned= FilterInput(this.MiddleNameEntry);
+                string lastNameCleaned = FilterInput(this.LastNameEntry);
+                string personalIdCleaned = FilterInput(this.PersonalIdEntry);
+
+
                 bool isSaved = await this.personService
                                             .AddPersonAsync(new PersonAddDTO
                                             {
-                                                FirstName = this.FirstNameEntry,
+                                                FirstName = firstNameCleaned,
                                                 MiddleName = this.MiddleNameEntry,
-                                                LastName = this.LastNameEntry,
+                                                LastName = lastNameCleaned,
                                                 DateOfBirth = personDOB ?? null,
                                                 Nationality = this.NationalityEntry,
-                                                PersonalId = this.PersonalIdEntry,
+                                                PersonalId = personalIdCleaned,
                                                 SexType = this.SelectedSex,
                                                 DocumentType = this.DocumentTypeEntry,
                                                 DocumentNumber = this.DocumentNumberEntry,
