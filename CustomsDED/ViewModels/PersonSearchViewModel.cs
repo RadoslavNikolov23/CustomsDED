@@ -59,7 +59,7 @@
                 this.EnterPersonInfoEntry = "";
                 await Logger.LogAsync(ex, "Error in SearchPerson, in the PersonSearchViewModel class");
                 await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSearchingPerson);
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
             }
         }
 

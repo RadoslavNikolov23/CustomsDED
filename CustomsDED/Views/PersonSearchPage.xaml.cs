@@ -8,6 +8,5 @@ public partial class PersonSearchPage : ContentPage
 	{
 		InitializeComponent();
         this.BindingContext = personSearchViewModel;
-
     }
 }

@@ -1,11 +1,11 @@
 ﻿namespace CustomsDED.ViewModels
 {
+    using System.Text;
+    using System.Text.RegularExpressions;
     using CommunityToolkit.Mvvm.ComponentModel;
 
     using CustomsDED.Common.Helpers;
     using CustomsDED.Resources.Localization;
-    using System.Text;
-    using System.Text.RegularExpressions;
 
     public abstract class BaseViewModel : ObservableObject
     {
@@ -19,12 +19,11 @@
             await Shell.Current.DisplayAlert(title, text, "OK");
         }
 
-        protected string FilterInput(string input)
+        protected string? FilterInput(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 return string.Empty;
 
-            // Map Cyrillic lookalikes to Latin
             Dictionary<char, char> mapChar = new Dictionary<char, char>
                                                     {
                                                         { 'А', 'A' },
@@ -41,7 +40,6 @@
                                                         { 'Х', 'X' }
                                                     };
 
-            // Convert to uppercase
             input = input.ToUpperInvariant();
 
             StringBuilder resultSB = new StringBuilder(input.Length);
@@ -58,8 +56,13 @@
                 }
             }
 
-            // Finally, keep only A–Z and 0–9
-            return Regex.Replace(resultSB.ToString(), @"[^A-Z0-9]", "");
+            string cleaned = Regex.Replace(resultSB.ToString(), @"[^A-Z0-9]", "");
+
+            if (Regex.IsMatch(cleaned, @"^\d+$"))
+                return null;
+
+
+            return string.IsNullOrEmpty(cleaned) ? null : cleaned;
         }
 
         protected async Task SendEmailWithReport()
@@ -97,17 +100,19 @@
 
                 Logger.ClearLog();
             }
-            catch (FeatureNotSupportedException)
+            catch (FeatureNotSupportedException ex)
             {
                 await ShowPopupMessage(AppResources.Error,
                                        AppResources.EmailNotSupportedOnDevice);
 
+                await Logger.LogAsync(ex, String.Format(AppResources.AnUnexpectedErrorOccurred, ex));
             }
             catch (Exception ex)
             {
                 await ShowPopupMessage(AppResources.Error,
-                         String.Format(AppResources.AnUnexpectedErrorOccurred, ex));
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
 
+                await Logger.LogAsync(ex, String.Format(AppResources.AnUnexpectedErrorOccurred, ex));
             }
 
         }

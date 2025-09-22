@@ -31,6 +31,12 @@
             this.vehicleService = vehicleService;
         }
 
+        [RelayCommand]
+        private async Task Clear()
+        {
+            this.PlateLicenseEntry = "";
+        }
+
         public async Task<string[]> ProcessCapturedImageAsync(byte[] photoBytes)
         {
             string[] textMessage = new string[2];
@@ -39,11 +45,9 @@
             
             if (croppedBytes == null)
             {
-                // await ShowPopupMessage(AppResources.Error,
-                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
-
                 textMessage[0] = AppResources.Error;
                 textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+
                 return textMessage;
             }
 
@@ -51,10 +55,9 @@
 
             if (!result.Success)
             {
-                //await ShowPopupMessage(AppResources.Error,
-                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 textMessage[0] = AppResources.Error;
                 textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+
                 return textMessage;
             }
 
@@ -67,17 +70,12 @@
                 {
                     if (result.AllText != null)
                     {
-
-                        //await ShowPopupMessage(AppResources.Error,
-                        //                      AppResources.NoValidLicensePlateFoundTryAgainOrFixManual);
                         this.PlateLicenseEntry = result.AllText;
                         textMessage[0] = AppResources.Error;
                         textMessage[1] = AppResources.NoValidLicensePlateFoundTryAgainOrFixManual;
                     }
                     else
                     {
-                        // await ShowPopupMessage(AppResources.Error,
-                        //                       AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain);
                         textMessage[0] = AppResources.Error;
                         textMessage[1] = AppResources.PictureWasTakenThereWereNoCapturedResultsTryAgain;
                     }
@@ -85,8 +83,6 @@
                 }
                 else
                 {
-                    //await ShowPopupMessage(AppResources.Information,
-                    //                       AppResources.PictureTakenSeeResult);
                     textMessage[0] = AppResources.Information;
                     textMessage[1] = AppResources.PictureTakenSeeResult;
 
@@ -114,8 +110,14 @@
                     return;
                 }
 
-                //string cleanedPlate = Regex.Replace(this.PlateLicenseEntry.ToUpper(), @"[^A-Z0-9]", "");
-                string cleanedPlate = FilterInput(this.PlateLicenseEntry);
+                string? cleanedPlate = FilterInput(this.PlateLicenseEntry);
+
+                if (cleanedPlate == null)
+                {
+                    await ShowPopupMessage(AppResources.Error,
+                                           AppResources.FailedToSaveVehiclePleaseTryAgain);
+                    return;
+                }
 
                 bool isSaved = await this.vehicleService
                                                 .AddVehicleAsync(new VehicleAddDTO
@@ -141,7 +143,7 @@
                 ClearEntries();
                 await Logger.LogAsync(ex, "Error in SaveVehicle, in the LicensePlateViewModel class.");
                 await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSavingVehicle);
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
             }
         }
 
@@ -158,34 +160,26 @@
             if (string.IsNullOrWhiteSpace(ocrText))
                 return null;
 
-            // 1. Normalize case and whitespace across multi-lines
             string normalized = Regex.Replace(ocrText.ToUpper(), @"\s+", " ").Trim();
 
-            // 2. Split into tokens
-            var tokens = normalized.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> tokens = normalized.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            // Optional: remove obvious noise words (brands, generic words)
-            string[] stopWords = { "SERVICE", "TOYOTA", "FORD", "CITY", "RUSE" };
-            tokens.RemoveAll(t => stopWords.Contains(t));
+            //string[] stopWords = { "SERVICE", "TOYOTA", "FORD", "CITY", "RUSE" };
+            //tokens.RemoveAll(t => stopWords.Contains(t));
 
-            // 3. Clean tokens by removing prefixes
             for (int i = 0; i < tokens.Count; i++)
             {
-                // Remove BG/RO/TR if separate
                 if (tokens[i] == "BG" || tokens[i] == "RO" || tokens[i] == "TR")
                 {
                     tokens[i] = string.Empty;
                     continue;
                 }
 
-                // Remove BG/RO/TR if glued at start
                 tokens[i] = Regex.Replace(tokens[i], @"^(BG|RO|TR)", "");
             }
 
-            // Remove blanks after cleaning
             tokens = tokens.Where(t => !string.IsNullOrEmpty(t)).ToList();
 
-            // 4. First pass: test each token individually
             foreach (var token in tokens)
             {
                 if (BulgarianRegex.IsMatch(token)) return token;
@@ -193,26 +187,27 @@
                 if (TurkishRegex.IsMatch(token)) return token;
             }
 
-            // 5. Second pass: test concatenated text (for glued formats like "BGA0101AA")
             string glued = string.Join("", tokens);
-            var matches = Regex.Matches(glued, @"[A-Z0-9]{5,10}"); // typical plate length
-            foreach (Match m in matches)
+            MatchCollection matches = Regex.Matches(glued, @"[A-Z0-9]{5,10}"); // typical plate length
+            
+            foreach (Match match in matches)
             {
-                var candidate = m.Value;
+                string candidate = match.Value;
+
                 if (BulgarianRegex.IsMatch(candidate)) return candidate;
                 if (RomanianRegex.IsMatch(candidate)) return candidate;
                 if (TurkishRegex.IsMatch(candidate)) return candidate;
             }
 
-            // 6. Nothing found
             return null;
         }
+
+      
 
         [RelayCommand]
         private async Task ReportAProblem()
         {
             await SendEmailWithReport();
         }
-
     }
 }

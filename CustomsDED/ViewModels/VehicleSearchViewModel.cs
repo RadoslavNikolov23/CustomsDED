@@ -57,7 +57,7 @@
                 this.EnterLicensePlateEntry = "";
                 await Logger.LogAsync(ex, "Error in SearchVehicle, in the VehicleSearchViewModel class");
                 await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSearchingVehicle);
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
             }
         }
 

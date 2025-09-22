@@ -115,7 +115,7 @@
 
                 await Logger.LogAsync(ex, "Error in SearchByDate, in the DateSearchViewModel class");
                 await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSearching);
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
             }
         }
         [RelayCommand]

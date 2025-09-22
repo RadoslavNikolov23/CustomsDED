@@ -77,10 +77,9 @@
 
             if (croppedBytes == null)
             {
-                // await ShowPopupMessage(AppResources.Error,
-                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 textMessage[0] = AppResources.Error;
                 textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
+
                 return textMessage;
             }
 
@@ -89,8 +88,6 @@
 
             if (!result.Success)
             {
-                //await ShowPopupMessage(AppResources.Error,
-                //                       AppResources.ScanDocumentFailedPleaseTryAgain);
                 textMessage[0] = AppResources.Error;
                 textMessage[1] = AppResources.ScanDocumentFailedPleaseTryAgain;
 
@@ -109,16 +106,11 @@
 
                 if (infoPerson == null)
                 {
-                    //await ShowPopupMessage(AppResources.Error,
-                    //                       AppResources.SomethingFailedPleaseTryAgain);
-
                     textMessage[0] = AppResources.Error;
                     textMessage[1] = AppResources.SomethingFailedPleaseTryAgain;
+
                     return textMessage;
                 }
-
-                // await ShowPopupMessage(AppResources.Information,
-                //                       AppResources.PictureTakenSeeResult);
 
                 textMessage[0] = AppResources.Information;
                 textMessage[1] = AppResources.PictureTakenSeeResult;
@@ -161,20 +153,25 @@
             }
         }
 
-
-
         [RelayCommand]
         private async Task SavePerson()
         {
-            DateTime? personDOB = MrzParserService.ParseDOBDate(this.DateOfBirthEntry);
-            DateTime? personExpDate = MrzParserService.ParseExpirationDate(this.ExpirDateEntry);
-
-            if (String.IsNullOrEmpty(this.FirstNameEntry) || String.IsNullOrEmpty(this.LastNameEntry))
+            if (String.IsNullOrEmpty(this.FirstNameEntry) || String.IsNullOrEmpty(this.LastNameEntry)
+                || String.IsNullOrEmpty(this.DateOfBirthEntry))
             {
                 await ShowPopupMessage(AppResources.Error,
                                        AppResources.FirstAndLastNameAreRequired);
                 return;
             }
+            if (String.IsNullOrEmpty(this.DateOfBirthEntry))
+            {
+                await ShowPopupMessage(AppResources.Error,
+                                       AppResources.DateOfBirthRequired);
+                return;
+            }
+
+            DateTime? personDOB = MrzParserService.ParseDOBDate(this.DateOfBirthEntry);
+            DateTime? personExpDate = MrzParserService.ParseExpirationDate(this.ExpirDateEntry);
 
             try
             {
@@ -219,7 +216,7 @@
                 ClearEntries();
                 await Logger.LogAsync(ex, "Error in SavePerson, in the MrzPersonViewModel class.");
                 await ShowPopupMessage(AppResources.Error,
-                                       AppResources.AnErrorOccurredWhileSavingPerson);
+                                       AppResources.SomethingFailedPleaseTryAgainContactDevelepors);
             }
         }
 

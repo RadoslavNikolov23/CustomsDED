@@ -50,7 +50,7 @@
                                Margin="10"
                                HasShadow="False"
                                IsVisible="True">
-                            <Label Text="{x:Static lang:AppResources.StartFromTopLeftCornerBorder}"
+                            <Label Text="{x:Static lang:AppResources.StartFromTopCenterBorder}"
                                    TextColor="White"
                                    FontSize="Micro"
                                    FontAttributes="Italic"/>
@@ -82,59 +82,70 @@
                                        Spacing="10"
                                        IsVisible="false">
 
-                        <Button Text="{x:Static lang:AppResources.TakePicture}"
-                                Clicked="TakePlatePictureClicked"
-                                BackgroundColor="SteelBlue"
-                                WidthRequest="160"
-                                HeightRequest="50"/>
+                    <Button Text="{x:Static lang:AppResources.TakePicture}"
+                            Clicked="TakePlatePictureClicked"
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="160"
+                            HeightRequest="50"/>
 
-                        <Button Text="{x:Static lang:AppResources.CloseCamera}"
-                                Clicked="CloseCameraViewClicked"
-                                BackgroundColor="SteelBlue"
-                                WidthRequest="160"
-                                HeightRequest="50"/>
+                    <Button Text="{x:Static lang:AppResources.CloseCamera}"
+                            Clicked="CloseCameraViewClicked"
+                            BackgroundColor="SteelBlue"
+                            WidthRequest="160"
+                            HeightRequest="50"/>
 
-                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
 
-                    <Frame
-                            BackgroundColor="White"
-                            BorderColor="Gray"
-                            CornerRadius="12"
-                            Padding="10">
+                <Frame BackgroundColor="White"
+                       BorderColor="Gray"
+                       CornerRadius="12"
+                       Padding="10">
 
-                        <!-- Manual entry fields -->
-                        <VerticalStackLayout>
-                            <Label Text="{x:Static lang:AppResources.VehicleNumber} "
-                                   FontSize="Small"/>
+                    <!-- Manual entry fields -->
+                    <VerticalStackLayout>
+                        <Label Text="{x:Static lang:AppResources.VehicleNumber} "
+                               FontSize="Small"/>
+
+                        <Grid>
                             <Entry Placeholder="{x:Static lang:AppResources.LicensePlate}"
                                    Text="{Binding PlateLicenseEntry, Mode=TwoWay}"/>
+                            <!-- leave space for the X -->
 
-                            <Label Text="{x:Static lang:AppResources.AdditionInfo} "
-                                   FontSize="Small"/>
-                            <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
-                                   Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
-                        </VerticalStackLayout>
+                            <ImageButton Source="close.png"
+                                         WidthRequest="20"
+                                         HeightRequest="20"
+                                         HorizontalOptions="End"
+                                         VerticalOptions="Center"
+                                         BackgroundColor="Transparent"
+                                         Command="{Binding ClearCommand}"/>
+                        </Grid>
 
-                    </Frame>
+                        <Label Text="{x:Static lang:AppResources.AdditionInfo} "
+                               FontSize="Small"/>
+                        <Entry Placeholder="{x:Static lang:AppResources.AdditionInfo}"
+                               Text="{Binding AdditionInfoEntry, Mode=TwoWay}"/>
+                    </VerticalStackLayout>
+
+                </Frame>
 
 
-                    <!-- Buttons -->
-                    <Button Text="{x:Static lang:AppResources.OpenCamera}"
-                            Clicked="OpenCameraViewClicked"                    
-                            BackgroundColor="SteelBlue"
-                            WidthRequest="330"
-                            HeightRequest="50"/>
+                <!-- Buttons -->
+                <Button Text="{x:Static lang:AppResources.OpenCamera}"
+                        Clicked="OpenCameraViewClicked"                    
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="330"
+                        HeightRequest="50"/>
 
 
-                    <Button Text="{x:Static lang:AppResources.SaveVehicle}"
-                            Command="{Binding SaveVehicleCommand}"
-                            BackgroundColor="SteelBlue"
-                            WidthRequest="330"
-                            HeightRequest="50"/>
+                <Button Text="{x:Static lang:AppResources.SaveVehicle}"
+                        Command="{Binding SaveVehicleCommand}"
+                        BackgroundColor="SteelBlue"
+                        WidthRequest="330"
+                        HeightRequest="50"/>
 
             </VerticalStackLayout>
         </ScrollView>
-        
+
         <BoxView HeightRequest="2"
                  BackgroundColor="Black"
                  VerticalOptions="End"

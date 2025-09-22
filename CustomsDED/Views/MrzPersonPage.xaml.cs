@@ -51,8 +51,6 @@ public partial class MrzPersonPage : ContentPage
 
     private async void TakeMRZPictureClicked(object sender, EventArgs e)
     {
-        //CreatingPopup creatingPopup = new CreatingPopup();
-        //Shell.Current.ShowPopup(creatingPopup);
         this.OverlayLabel.Text = AppResources.Processing;
         this.OverlayGrid.IsVisible = true;
 
@@ -63,7 +61,6 @@ public partial class MrzPersonPage : ContentPage
 
             if (stream == null)
             {
-                //await creatingPopup.CloseAsync();
                 this.OverlayGrid.IsVisible = false;
                 await DisplayAlert(AppResources.Error,
                                    AppResources.CameraCaptureCanceled,
@@ -82,8 +79,6 @@ public partial class MrzPersonPage : ContentPage
             if (BindingContext is MrzPersonViewModel vm)
                 textMessage = await vm.ProcessCapturedImageAsync(photoBytes);
 
-
-            //await creatingPopup.CloseAsync();
             this.OverlayGrid.IsVisible = false;
 
             await DisplayAlert(textMessage[0],
@@ -98,7 +93,7 @@ public partial class MrzPersonPage : ContentPage
 
             await Logger.LogAsync(ex, "Error in OnTakePlatePictureClicked, in the MrzPersonPage class.");
             await DisplayAlert(AppResources.Error,
-                               AppResources.AnErrorOccurredWhileTakingPicture,
+                               AppResources.SomethingFailedPleaseTryAgainContactDevelepors,
                                "OK");
 
         }
